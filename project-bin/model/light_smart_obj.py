@@ -1,14 +1,13 @@
 import json
-from light_statuses import LightStatuses as ls
+from model.light_statuses import LightStatuses as ls
 class LightSmartObj:
     def __init__(self,room,bed_id):
         self.room=room
         self.bed_id = bed_id
-        self.light_state= ls.LIGHT_OFF
+        self.light_state = ls.LIGHT_OFF
         self.energy_consumption_sensor = 0.0
 
     def switch_light_state(self):
-
         match self.light_state:
             case ls.LIGHT_OFF:
                 self.light_state = ls.LIGHT_LOW
@@ -29,7 +28,6 @@ class LightSmartObj:
                 self.light_state = level
             case ls.LIGHT_OFF:
                 self.light_state = level
-
 
     def update_energy_consumption(self):
         if self.light_state == ls.LIGHT_LOW:
