@@ -1,5 +1,7 @@
 import json
 from model.light_statuses import LightStatuses as ls
+from enum import Enum
+
 class LightSmartObj:
     def __init__(self,room_id,bed_id):
         self.room=room_id
@@ -38,4 +40,4 @@ class LightSmartObj:
             self.energy_consumption_sensor = 10
 
     def to_json(self):
-        return json.dumps(self, default=lambda o: o.__dict__)
+        return json.dumps(self, default=lambda o: o.value if isinstance(o, Enum) else o.__dict__)

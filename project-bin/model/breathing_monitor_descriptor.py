@@ -17,4 +17,8 @@ class BreathingMonitorDescriptor:
 
         
     def to_json(self):
-        return json.dump(self,default=lambda o: o.__dict__)
+        return json.dumps(self,default=lambda o: o.__dict__)
+
+
+    
+    
