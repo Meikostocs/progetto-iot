@@ -33,10 +33,11 @@ class LightActuatorResource(resource.Resource): #se cambio qualcosa, viene riman
         #self.coffee_history.increase_short_coffee()
         self.device_info.switch_light_state()
         self.device_info.update_energy_consumption()
+        print(f'State changed in: {self.device_info.light_state}')
         return aiocoap.Message(code=Code.CHANGED)
 
     async def render_put(self, request):
-        print(f'LightActuatorResource -> PUT Byte payload: {request.payload}')
+        #print(f'LightActuatorResource -> PUT Byte payload: {request.payload!r}')
         json_payload_string = request.payload.decode('UTF-8')
         print(f'LightActuatorResource -> PUT String Payload: {json_payload_string}')
         change_light_request = LightRequestDescriptor(**json.loads(json_payload_string))

@@ -3,8 +3,8 @@ from model.alarm_statuses import AlarmStatuses as As
 
 class AlarmSwitch:
 
-    def __init__(self,room,bed_id):
-        self.room = room
+    def __init__(self,room_id,bed_id):
+        self.room = room_id
         self.bed_id = bed_id
         self.alarm_state = As.ALARM_OFF
 

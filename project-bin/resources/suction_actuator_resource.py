@@ -30,10 +30,11 @@ class SuctionActuatorResource(resource.Resource):
         print("SuctionActuatorResource -> POST Request Received ...")
         # self.coffee_history.increase_short_coffee()
         self.device_info.switch_suction_state()
+        print(f'State changed in: {self.device_info.suction_state}')
         return aiocoap.Message(code=Code.CHANGED)
 
     async def render_put(self, request):
-        print(f'SuctionActuatorResource -> PUT Byte payload: {request.payload}')
+        #print(f'SuctionActuatorResource -> PUT Byte payload: {request.payload}')
         json_payload_string = request.payload.decode('UTF-8')
         print(f'LightActuatorResource -> PUT String Payload: {json_payload_string}')
         change_suction_request = SuctionRequestDescriptor(**json.loads(json_payload_string))

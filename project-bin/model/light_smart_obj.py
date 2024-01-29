@@ -1,8 +1,8 @@
 import json
 from model.light_statuses import LightStatuses as ls
 class LightSmartObj:
-    def __init__(self,room,bed_id):
-        self.room=room
+    def __init__(self,room_id,bed_id):
+        self.room=room_id
         self.bed_id = bed_id
         self.light_state = ls.LIGHT_OFF
         self.energy_consumption_sensor = 0.0

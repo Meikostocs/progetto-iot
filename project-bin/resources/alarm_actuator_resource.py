@@ -29,10 +29,11 @@ class AlarmActuatorResource(resource.Resource):
     async def render_post(self, request):
         print("AlarmActuatorResource -> POST Request Received ...")
         self.device_info.switch_alarm_state()
+        print(f'State changed in: {self.device_info.alarm_state}')
         return aiocoap.Message(code=Code.CHANGED)
 
     async def render_put(self, request):
-        print(f'AlarmActuatorResource -> PUT Byte payload: {request.payload}')
+        #print(f'AlarmActuatorResource -> PUT Byte payload: {request.payload}')
         json_payload_string = request.payload.decode('UTF-8')
         print(f'AlarmActuatorResource -> PUT String Payload: {json_payload_string}')
         change_alarm_request = AlarmRequestDescriptor(**json.loads(json_payload_string))

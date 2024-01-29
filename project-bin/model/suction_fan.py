@@ -2,8 +2,8 @@ import json
 from model.suction_statuses import SuctionStatuses as ss
 
 class SuctionFan:
-    def __init__(self, room, bed_id):
-        self.room = room
+    def __init__(self, room_id, bed_id):
+        self.room = room_id
         self.bed_id = bed_id
         self.suction_state = ss.SUCTION_OFF
 
