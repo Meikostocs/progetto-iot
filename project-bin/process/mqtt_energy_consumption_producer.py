@@ -8,7 +8,7 @@ def on_connect(client, userdata, flags, rc):
     print(f'Connected with result code {str(rc)}')
 
 def publish_telemetry_data():
-    target_topic = "{0}/{1}/{2}/{3}".format(
+    target_topic = "{0}/{1}/{2}/{3}/{4}".format(
             MqttConfigurationParameters.MQTT_BASIC_TOPIC,
             light1.room_id,
             light1.bed_id,
@@ -28,7 +28,7 @@ mqtt_client = mqtt.Client(light1.room_id)
 mqtt_client.on_connect = on_connect
 
 # Set Account Username & Password
-mqtt_client.username_pw_set(MqttConfigurationParameters.MQTT_USERNAME, MqttConfigurationParameters.MQTT_PASSWORD)
+# mqtt_client.username_pw_set(MqttConfigurationParameters.MQTT_USERNAME, MqttConfigurationParameters.MQTT_PASSWORD)
 
 print("Connecting to " + MqttConfigurationParameters.BROKER_ADDRESS + " port: " + str(MqttConfigurationParameters.BROKER_PORT))
 mqtt_client.connect(MqttConfigurationParameters.BROKER_ADDRESS, MqttConfigurationParameters.BROKER_PORT)
