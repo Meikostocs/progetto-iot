@@ -14,10 +14,9 @@ def publish_telemetry_data():
             light1.bed_id,
             MqttConfigurationParameters.TELEMETRY_TOPIC,
             MqttConfigurationParameters.ENERGY_CONSUMPTION_TOPIC)
-   # device_payload_string = light1.energy_consumption_sensor.to_json()
+
     device_payload_string = light1.to_json()
-    #device_payload_string =LightSmartObj.to_json()
-    #device_payload_string = electric_vehicle_telemetry_data.to_json()
+
 
     mqtt_client.publish(target_topic, device_payload_string, 0, False)
     print(f"Telemetry Data Published: Topic: {target_topic} Payload: {device_payload_string}")
@@ -35,10 +34,10 @@ mqtt_client.connect(MqttConfigurationParameters.BROKER_ADDRESS, MqttConfiguratio
 mqtt_client.loop_start()
 
 
-publish_telemetry_data()
+
 
 for message_id in range(message_limit):
-    light1.update_energy_consumption()
+    light1.update_energy_consumption_mqtt()
     publish_telemetry_data()
     time.sleep(3)
 

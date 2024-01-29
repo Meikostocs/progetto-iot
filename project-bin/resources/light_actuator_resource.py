@@ -14,7 +14,7 @@ class LightActuatorResource(resource.Resource): #se cambio qualcosa, viene riman
     def __init__(self,device_name):
         super().__init__()
         self.device_name = device_name
-        self.device_info = LightSmartObj(room=1,bed_id=2)
+        self.device_info = LightSmartObj(room_id='A1',bed_id=1)
         self.if_= "core.a"
         self.ct = numbers.media_types_rev['application/senml+json']  # TESTO, METTO DENTRO "LOW" O "MEDIUM" O "HIGH"
         self.rt ="it.project.device.actuator.light"
@@ -28,6 +28,14 @@ class LightActuatorResource(resource.Resource): #se cambio qualcosa, viene riman
         pack.add(current)
         return pack.to_json()
 
+
+    async def render_get(self, request):
+        print("LightActuatorResource -> GET Request Received ...")
+        payload_string = self.device_info.to_json()
+        return aiocoap.Message(content_format=numbers.media_types_rev['application/senml+json'],
+                               payload=payload_string.encode('utf8'))
+
+
     async def render_post(self, request):
         print("LightActuatorResource -> POST Request Received ...")
         #self.coffee_history.increase_short_coffee()
@@ -40,32 +48,35 @@ class LightActuatorResource(resource.Resource): #se cambio qualcosa, viene riman
         #print(f'LightActuatorResource -> PUT Byte payload: {request.payload!r}')
         json_payload_string = request.payload.decode('UTF-8')
         print(f'LightActuatorResource -> PUT String Payload: {json_payload_string}')
+        #change_light_request = LightRequestDescriptor(json.loads(json_payload_string)["light_state"])
         change_light_request = LightRequestDescriptor(**json.loads(json_payload_string))
-        print(f'Change Light Request Received: {change_light_request.type}')
+        print(f'Change Light Request Received: {change_light_request.light_state}')
         print('Changed light status to: ', end='')
 
-        if change_light_request.type == LightRequestDescriptor.LIGHT_LOW:
-            self.device_info.set_light_state(change_light_request.type)
+        if change_light_request.light_state == LightRequestDescriptor.LIGHT_LOW:
+            self.device_info.set_light_state(change_light_request.light_state)
             self.device_info.update_energy_consumption()
-            print(change_light_request.type)
+            print(self.device_info.light_state)
+            print(change_light_request.light_state)
             return aiocoap.Message(code=Code.CHANGED)
 
-        if change_light_request.type == LightRequestDescriptor.LIGHT_MEDIUM:
-            self.device_info.set_light_state(change_light_request.type)
+        if change_light_request.light_state == LightRequestDescriptor.LIGHT_MEDIUM:
+            self.device_info.set_light_state(change_light_request.light_state)
             self.device_info.update_energy_consumption()
-            print(change_light_request.type)
+            print(self.device_info.light_state)
+            print(change_light_request.light_state)
             return aiocoap.Message(code=Code.CHANGED)
 
-        if change_light_request.type == LightRequestDescriptor.LIGHT_HIGH:
-            self.device_info.set_light_state(change_light_request.type)
+        if change_light_request.light_state == LightRequestDescriptor.LIGHT_HIGH:
+            self.device_info.set_light_state(change_light_request.light_state)
             self.device_info.update_energy_consumption()
-            print(change_light_request.type)
+            print(change_light_request.light_state)
             return aiocoap.Message(code=Code.CHANGED)
 
-        if change_light_request.type == LightRequestDescriptor.TURN_OFF:
-            self.device_info.set_light_state(change_light_request.type)
+        if change_light_request.light_state == LightRequestDescriptor.TURN_OFF:
+            self.device_info.set_light_state(change_light_request.light_state)
             self.device_info.update_energy_consumption()
-            print(change_light_request.type)
+            print(change_light_request.light_state)
             return aiocoap.Message(code=Code.CHANGED)
 
         else:

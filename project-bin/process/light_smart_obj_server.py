@@ -6,8 +6,8 @@ from resources.light_actuator_resource import LightActuatorResource
 
 
 logging.basicConfig(level=logging.INFO)
-#logging.getLogger("coap-server").setLevel(logging.INFO)
-logging.getLogger("coap-server").setLevel(logging.DEBUG)
+logging.getLogger("coap-server").setLevel(logging.INFO)
+#logging.getLogger("coap-server").setLevel(logging.DEBUG)
 
 
 def main():

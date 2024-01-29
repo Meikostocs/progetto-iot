@@ -59,8 +59,10 @@ async def change_alarm_state():
 
 async def main():
     await change_light_state()
-    await change_suction_state()
-    await change_alarm_state()
+    #await change_suction_state()
+    #await change_alarm_state()
+    return 0
 
 if __name__ == "__main__":
     asyncio.get_event_loop().run_until_complete(main())
+    #asyncio.run(main())

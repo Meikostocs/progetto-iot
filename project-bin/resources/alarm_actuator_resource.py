@@ -13,7 +13,7 @@ class AlarmActuatorResource(resource.Resource):
     def __init__(self,device_name):
         super().__init__()
         self.device_name = device_name
-        self.device_info = AlarmSwitch(room=1,bed_id=2)
+        self.device_info = AlarmSwitch(room_id=1,bed_id=2)
         self.if_ = "core.a"
         self.ct = numbers.media_types_rev['application/senml+json']  # TESTO, METTO DENTRO "LOW" O "MEDIUM" O "HIGH"
         self.rt = "it.project.device.actuator.alarm"
