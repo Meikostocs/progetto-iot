@@ -1,1 +1,9 @@
 aiocoap==0.4.7
+certifi==2023.11.17
+charset-normalizer==3.3.2
+idna==3.6
+paho-mqtt==1.6.1
+requests==2.31.0
+resources==0.0.1
+staty==1.2.4
+urllib3==2.1.0
