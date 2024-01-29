@@ -1,8 +1,10 @@
+from breathing_monitor_sensor.co2_sensor import Co2Sensor
+
 class BreathingMonitorTelemtryData:
     def __init__(self, spo2, resp, co2, etco2):
         """
         Caputure data.
-        
+
         :param spo2: SpO2 (Blood oxygen saturation value).
         :type spo2: float [%]
         :param resp: RESP, Respiration Frequency.
@@ -16,7 +18,7 @@ class BreathingMonitorTelemtryData:
         """
         self.spo2  = spo2
         self.resp  = resp
-        self.co2   = co2
+        self.co2   = Co2Sensor(units="mmHg") 
         self.etco2 = etco2
 
 
