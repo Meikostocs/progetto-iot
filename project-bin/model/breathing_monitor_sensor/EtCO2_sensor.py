@@ -8,10 +8,10 @@ class EtCO2Sensor:
         """
         End-Tidal CO2. It measures the concentration of CO2 at exhalation end. 
 
-        :param etco2:
-        :type etco2: dict
-            - "pressure":"mmHg".
-            - "concentration":"%".
+        :param concentration:
+        :type concentration: float [mmHg]
+        :param pressure
+        :type pressure: float [%]
         """
         if concentration is None:
             self.concentration = random.uniform(3,5)
@@ -41,4 +41,3 @@ class EtCO2Sensor:
         
     def to_json(self):
         return json.dumps(self, default=lambda o: o.__dict__)
-
