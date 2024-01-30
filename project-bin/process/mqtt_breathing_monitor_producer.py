@@ -1,18 +1,14 @@
-import paho.mqtt.client as mqtt
 import time
 import json
-
 import sys
 sys.path.append("./")
 sys.path.append("./model")
-
 #Configuration files
-from conf.mqtt_conf_166317 import MqttConfigurationParameters
+from conf.mqtt_conf_166317   import MqttConfigurationParameters
 #Custom models
 from model.breathing_monitor import BreathingMonitor
-from model.console import Console
-from model.mqtt_publisher import MQTTPublisher
-
+from model.console           import Console
+from model.mqtt_publisher    import MQTTPublisher
 
 def on_connect(client, userdata, flags, rc):
     console.print(f"Connected with {str(rc)} status code")
@@ -40,12 +36,12 @@ target_topic = "{0}/{1}/{2}/{3}/{4}".format(
         MqttConfigurationParameters.BREATHING_MONITOR_TOPIC)
 
 mqtt_publisher = MQTTPublisher(
-    MqttConfigurationParameters.BROKER_ADDRESS,
-    MqttConfigurationParameters.BROKER_PORT,
-    brathing_monitor_id,
-    target_topic,
-    on_connect,
-    qos=2)
+    broker_address     = MqttConfigurationParameters.BROKER_ADDRESS,
+    broker_port        = MqttConfigurationParameters.BROKER_PORT,
+    publisher_id       = brathing_monitor_id,
+    topic              = target_topic,
+    on_connect_handler = on_connect,
+    qos                = 2)
 
 mqtt_publisher.start_connection()
 
