@@ -19,7 +19,7 @@ class EtCO2Sensor:
             self.concentration = concentration
         
         if pressure is None:
-            self.pressure = pressure.uniform(35,45)
+            self.pressure = random.uniform(35,45)
         else:
             self.pressure = pressure
     
@@ -32,7 +32,7 @@ class EtCO2Sensor:
         elif self.pressure >= 55:
             self.pressure = 55 
         
-        self.concentration += reandom.uniform(-2,2)
+        self.concentration += random.uniform(-2,2)
         if self.concentration <= 0:
             self.concentration = 0
         elif self.concentration >= 8:

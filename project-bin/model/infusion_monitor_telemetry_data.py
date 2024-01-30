@@ -8,7 +8,7 @@ class InfusionMonitorTelemetryData:
         """
         self.temperature = TemperatureSensor()
 
-    def update_mesurements(self):
+    def update_measurements(self):
         self.temperature.update_measurements()
 
     def to_json(self):

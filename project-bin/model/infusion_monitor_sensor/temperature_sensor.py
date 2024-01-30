@@ -8,18 +8,20 @@ class TemperatureSensor:
         """
         Temperature Sensor
 
-        :param measurement: SpO2 (Blood oxygen saturation value).
-        :type measurement: float [%]
+        :param measurement: Body Temperature.
+        :type measurement: float [unit]
         :param unit: unit of measure
         :type unit: String ["C", "F"]
         """
+        self.unit = unit
+        self.measurement = measurement
+            
         if measurement is None:
-            self.measurement = random.uniform(36,37)
-            if self.unit == "F":
-                self.measurement = self.to_fahrenheit()
-        else:
-            self.measurement = measurement
-        self.unit = "%"
+            if self.unit == 'C':
+                self.measurement = 36.6
+            else:
+                self.measurement = 97.88
+        
 
 
     def update_measurements(self):
@@ -51,7 +53,7 @@ class TemperatureSensor:
         if self.unit == 'F':
             self.measurement = (self.measurement - 32)/1.8
             self.unit = 'C'
-            
+
     def to_json(self):
         return json.dumps(self, default=lambda o: o.__dict__)
 
