@@ -58,12 +58,11 @@ async def set_light_time():
             await coap_put_client.set_light_state(LightRequestDescriptor.TURN_OFF)
 
         await asyncio.sleep(2)
-        
+
 def breathing_monitor_thread_handler():
     BreathingMonitorManager().run()
 
 def infusion_monitor_thread_handler():
-    
     InfusionMonitorManager().run()
 
 async def main():
