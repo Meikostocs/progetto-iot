@@ -4,7 +4,7 @@ import random
 class Co2Sensor:
 
 
-    def __init__(self, unit="mmHg", measurement=None):
+    def __init__(self, measurement=None, unit="mmHg"):
         """
         CO2 Sensor
 
@@ -26,17 +26,34 @@ class Co2Sensor:
         Perform a measurement in mmHg. 
         If current unit of measurements is kPa, mulitply by conversion constant
         """
-        self.measurement += random.uniform(-5,5)
+        # Switch to mmHg unit
+        change_unit = False
+        if self.unit == 'kPa':
+            change_unit = True
+            self.to_mmhg()
         
+        # Perform update
+        self.measurement += random.uniform(-5,5)
         if self.measurement<= 25:
             self.measurement = 25
         elif self.measurement >= 55:
             self.measurement = 55 
 
-        if (self.unit == 'kPa'):
-            self.measurement *= 0.133322 
+        # Restore unit
+        if change_unit:
+            self.to_kpa()
 
         
+    def to_mmhg(self):
+        if self.unit == 'kPa':
+            self.unit = "mmHg"
+            self.measurement = self.measurement/0.13332236
+    
+    def to_kpa(self):
+        if self.unit == 'mmHg':
+            self.unit = "kPa"
+            self.measurement = self.measurement*0.13332236
+
     def to_json(self):
         return json.dumps(self, default=lambda o: o.__dict__)
 
