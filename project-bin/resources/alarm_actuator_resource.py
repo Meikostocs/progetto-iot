@@ -38,15 +38,14 @@ class AlarmActuatorResource(resource.Resource):
         print(f'AlarmActuatorResource -> PUT String Payload: {json_payload_string}')
         change_alarm_request = AlarmRequestDescriptor(**json.loads(json_payload_string))
         print(f'Change Light Request Received: {change_alarm_request.type}')
-        print('Changed light status to: ', end='')
 
         if change_alarm_request.type == AlarmRequestDescriptor.ALARM_ON:
             self.device_info.turn_on()
-            print(change_alarm_request.type)
+            print(f'State changed in: {self.device_info.alarm_state}')
             return aiocoap.Message(code=Code.CHANGED)
 
         if change_alarm_request.type == AlarmRequestDescriptor.ALARM_OFF:
             self.device_info.turn_off()
-            print(change_alarm_request.type)
+            print(f'State changed in: {self.device_info.alarm_state}')
             return aiocoap.Message(code=Code.CHANGED)
 

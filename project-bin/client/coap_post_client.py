@@ -59,7 +59,7 @@ async def change_alarm_state():
 
 async def main():
     await change_light_state()
-    #await change_suction_state()
+    await change_suction_state()
     #await change_alarm_state()
     return 0
 

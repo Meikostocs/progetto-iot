@@ -14,12 +14,11 @@ def publish_telemetry_data():
             light1.bed_id,
             MqttConfigurationParameters.TELEMETRY_TOPIC,
             MqttConfigurationParameters.ENERGY_CONSUMPTION_TOPIC)
-
     device_payload_string = light1.to_json()
 
 
     mqtt_client.publish(target_topic, device_payload_string, 0, False)
-    print(f"Telemetry Data Published: Topic: {target_topic} Payload: {device_payload_string}")
+    print(f"Telemetry Data Published: Topic: {target_topic}\n Payload: {device_payload_string}")
 
 light1 = LightSmartObj(room_id="A1",bed_id=1)
 message_limit = 100

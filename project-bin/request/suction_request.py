@@ -7,8 +7,8 @@ class SuctionRequestDescriptor:
     SUCTION_HIGH = "high_suction"
     SUCTION_OFF="off_suction"
 
-    def __init__(self, type):
-        self.type = type
+    def __init__(self, suction_state):
+        self.suction_state = suction_state
 
     def to_json(self):
         return json.dumps(self, default=lambda o: o.__dict__)
