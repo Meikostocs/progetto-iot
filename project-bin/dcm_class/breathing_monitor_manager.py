@@ -13,10 +13,12 @@ import asyncio
 import aiocoap
 from aiocoap import *
 from request.oxygenation_request import OxygenationRequest
+from request.alarm_request import AlarmRequestDescriptor
+
 
 class BreathingMonitorManager:
 
-    def __init__(self):
+    def __init__(self,alarm_handler = None):
 
         self.console = Console(debug=True)
         self.breathing_monitor_id = "python-breathing-subscriber-{0}".format(MqttConfigurationParameters.MQTT_USERNAME)
@@ -35,7 +37,7 @@ class BreathingMonitorManager:
             on_connect_handler = self.on_connect,
             on_message_handler = self.on_message
         )
-
+        self.alarm_handler = alarm_handler
 
     def run(self):
         self.mqtt_subscriber.start_connection()
@@ -74,6 +76,16 @@ class BreathingMonitorManager:
 
         if breathing_monitor.critical_status():
             self.console.print("someone is dying")
+            loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(loop)
+            loop.run_until_complete(self.alarm_handler('A1',1,AlarmRequestDescriptor.ALARM_ON))
+            loop.close()
+        else:
+            loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(loop)
+            loop.run_until_complete(self.alarm_handler('A1', 1, AlarmRequestDescriptor.ALARM_OFF))
+            loop.close()
+
         
 
         if breathing_monitor.breathing_monitor_telemetry_data.SpO2.critical_status():

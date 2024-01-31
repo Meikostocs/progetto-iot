@@ -25,6 +25,7 @@ from process.all_server_coap import main as all_server_coap
 from request.light_request import LightRequestDescriptor
 from request.suction_request import SuctionRequestDescriptor
 import client.coap_post_client as coap_post_client
+from request.alarm_request import AlarmRequestDescriptor
 
 
 
@@ -49,7 +50,7 @@ async def activate_suction_fan():
         else:
             await coap_put_client.set_suction_state(SuctionRequestDescriptor.SUCTION_OFF)
 
-        await asyncio.sleep(300) #aspetta 5 minuti
+        await asyncio.sleep(5) #aspetta 5 minuti
 
 async def get_current_time():
     return datetime.datetime.now().time()
@@ -69,65 +70,15 @@ async def set_light_time():
         else:
             await coap_put_client.set_light_state(LightRequestDescriptor.TURN_OFF)
 
-        await asyncio.sleep(2)
+        await asyncio.sleep(5)
 
-'''
-async def switch_alarm():
-    while True:
-        CO2_min =
-        CO2_max =
-        EtCO2_min =
-        EtCO2_max =
-        SpO2_min =
-        SpO2_min =
-        RESP_max =
 
-        temp_max =
+async def switch_alarm(id_room,id_bed,status):
+    await coap_put_client.set_alarm_state(status)
 
-        heart_rate_min =
-        heart_rate_max =
-        NIBP_min =
-        NIBP_max =
-        IBP_min =
-        IBP_max =
-        ECG_min =
-        ECG_max =
-        pressure_avarage_min =
-        pressure_avarage_max =
-
-        Temperature_min =
-        Temperature_max =
-        Battery_min =
-        Battery_max =
-
-        
-        Monitor respirazione:
-        CO2 =
-        EtCO2 =
-        SpO2 =
-        RESP =
-
-        Monitor infusione:
-        temp = 
-
-        Monitor Cuore:
-        heart_rate = 
-        NIBP = 
-        IBP = 
-        ECG =
-        pressure_avarage = 
-
-        Environment Monitoring :
-        Temperature =
-        Battery =
-    
-        # consumer MQTT, LEGGO PARAMENTRI
-        # GET..
-        return 0  # get_..
-'''
 
 def breathing_monitor_thread_handler():
-    BreathingMonitorManager().run()
+    BreathingMonitorManager(alarm_handler=switch_alarm).run()
 
 def infusion_monitor_thread_handler():
     InfusionMonitorManager().run()
