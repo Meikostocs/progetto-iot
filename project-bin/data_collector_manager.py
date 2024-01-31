@@ -15,7 +15,6 @@ from request.light_request import LightRequestDescriptor
 from dcm_class.breathing_monitor_manager import BreathingMonitorManager 
 from dcm_class.infusion_monitor_manager import InfusionMonitorManager
 from request.suction_request import SuctionRequestDescriptor
-from request.oxygenation_request import OxygenationRequest
 import random
 import logging
 import asyncio
@@ -72,19 +71,9 @@ async def set_light_time():
 
         await asyncio.sleep(2)
 
-
-
-async def activate_oxygenation():
-
-    while True:
-        await coap_put_client.set_oxygenation_state(OxygenationRequest.OXYGENATION_LOW)
-        await asyncio.sleep(300) #aspetta 5 minuti
-
-
+'''
 async def switch_alarm():
     while True:
-        '''
-
         CO2_min =
         CO2_max =
         EtCO2_min =
@@ -111,7 +100,7 @@ async def switch_alarm():
         Battery_min =
         Battery_max =
 
-        main
+        
         Monitor respirazione:
         CO2 =
         EtCO2 =
@@ -131,10 +120,11 @@ async def switch_alarm():
         Environment Monitoring :
         Temperature =
         Battery =
-        '''
-
+    
+        # consumer MQTT, LEGGO PARAMENTRI
+        # GET..
         return 0  # get_..
-
+'''
 
 def breathing_monitor_thread_handler():
     BreathingMonitorManager().run()
@@ -154,25 +144,11 @@ def activate_suction_fan_handler():
     loop.run_until_complete(activate_suction_fan())
     loop.close()
 
-def activate_oxygenation_handler():
-    loop = asyncio.new_event_loop()
-    asyncio.set_event_loop(loop)
-    loop.run_until_complete(activate_oxygenation())
-    loop.close()
-
 async def main():
     infusion_monitor_thread  = threading.Thread(target=infusion_monitor_thread_handler).start()
     breathing_monitor_thread = threading.Thread(target=breathing_monitor_thread_handler).start()
     set_light_time_thread = threading.Thread(target=set_light_time_handler).start()
     activate_suction_fan_thread = threading.Thread(target=activate_suction_fan_handler).start()
-    activate_oxygenation_fan_thread = threading.Thread(target=activate_oxygenation_handler).start()
-    
-
-
-    infusion_monitor_thread.join()
-    breathing_monitor_thread.join()
-    set_light_time_thread.join()
-    activate_suction_fan_thread.join()
 
     #asyncio.create_task(all_server_coap())
 

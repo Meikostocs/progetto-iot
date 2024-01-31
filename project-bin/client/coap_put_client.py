@@ -70,10 +70,10 @@ async def set_alarm_state(level):
         print(
             f'Result: {response.code}\nRequest payload: {request.payload.decode("utf-8")}\nResponse:{response_string}\n')
 
-async def set_oxygenation_state(level):
+async def set_oxygenation_state():
     coap_client = await Context.create_client_context()
     request = Message(code=Code.PUT, uri=TARGET_ENDPOINT + target_oxygenation_uri)
-    oxygenation_request = OxygenationRequest(level)
+    oxygenation_request = OxygenationRequest(OxygenationRequest.OXYGENATION_MEDIUM)
     payload_json_string = oxygenation_request.to_json()
     request.payload = payload_json_string.encode("utf-8")
     try:
@@ -88,9 +88,10 @@ async def set_oxygenation_state(level):
 
 
 async def main():
-    await set_light_state()
-    await set_suction_state()
-    await set_alarm_state()
+    #await set_light_state()
+    #await set_suction_state()
+    #await set_alarm_state()
+    await set_oxygenation_state()
 
 if __name__ == "__main__":
     asyncio.get_event_loop().run_until_complete(main())

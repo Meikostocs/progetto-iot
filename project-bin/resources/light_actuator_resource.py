@@ -45,7 +45,6 @@ class LightActuatorResource(resource.Resource): #se cambio qualcosa, viene riman
         return aiocoap.Message(code=Code.CHANGED)
 
     async def render_put(self, request):
-        #print(f'LightActuatorResource -> PUT Byte payload: {request.payload!r}')
         json_payload_string = request.payload.decode('UTF-8')
         print(f'LightActuatorResource -> PUT String Payload: {json_payload_string}')
         #change_light_request = LightRequestDescriptor(json.loads(json_payload_string)["light_state"])

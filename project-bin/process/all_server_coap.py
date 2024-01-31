@@ -5,10 +5,11 @@ import aiocoap
 import sys
 sys.path.append("../resources")
 sys.path.append('../')
-from alarm_actuator_resource import AlarmActuatorResource
-from light_actuator_resource import LightActuatorResource
-from suction_actuator_resource import SuctionActuatorResource
-from oxygenation_actuator_resource import OxygenationActuatorResource
+from resources.alarm_actuator_resource import AlarmActuatorResource
+from resources.light_actuator_resource import LightActuatorResource
+from resources.suction_actuator_resource import SuctionActuatorResource
+from resources.oxygenation_actuator_resource import OxygenationActuatorResource
+
 logging.basicConfig(level=logging.INFO)
 logging.getLogger("coap-server").setLevel(logging.INFO)
 #logging.getLogger("coap-server").setLevel(logging.DEBUG)
