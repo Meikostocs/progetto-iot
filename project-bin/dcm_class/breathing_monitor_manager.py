@@ -9,10 +9,7 @@ from conf.mqtt_conf_166317 import MqttConfigurationParameters
 from model.breathing_monitor import BreathingMonitor
 from model.console import Console
 from model.mqtt_subscriber import MQTTSubscriber
-import logging
 import asyncio
-import aiocoap
-from aiocoap import *
 from request.oxygenation_request import OxygenationRequest
 from request.alarm_request import AlarmRequestDescriptor
 from client.coap_put_client import set_oxygenator_state
@@ -29,9 +26,9 @@ class BreathingMonitorManager:
             MqttConfigurationParameters.TELEMETRY_TOPIC,
             MqttConfigurationParameters.BREATHING_MONITOR_TOPIC
         )
-        self.alarm = False
-        self.had_oxygen_problem = False
+        self.previous_oxygenation = OxygenationRequest.OXYGENATION_STOP
 
+        self.alarm = False
         self.mqtt_subscriber = MQTTSubscriber(
             broker_address=MqttConfigurationParameters.BROKER_ADDRESS,
             broker_port=MqttConfigurationParameters.BROKER_PORT,
@@ -40,6 +37,7 @@ class BreathingMonitorManager:
             on_connect_handler=self.on_connect,
             on_message_handler=self.on_message
         )
+        self.oxygenation_value = None
         self.alarm_handler = alarm_handler
 
     def run(self):
@@ -91,21 +89,16 @@ class BreathingMonitorManager:
             loop.close()
             self.alarm = False
 
-
-        if breathing_monitor.breathing_monitor_telemetry_data.SpO2.critical_status():
+        if (breathing_monitor.breathing_monitor_telemetry_data.SpO2.critical_status()
+                and breathing_monitor.breathing_monitor_telemetry_data.SpO2.needed_oxygen() != self.previous_oxygenation):
+            self.previous_oxygenation = breathing_monitor.breathing_monitor_telemetry_data.SpO2.needed_oxygen()
             self.console.print(f"CRITICAL SITUATION AT {id_room}-{id_bed} SPO2")
-            if not self.had_oxygen_problem:
-                loop = asyncio.new_event_loop()
-                asyncio.set_event_loop(loop)
-                loop.run_until_complete(self.activate_emergency_oxygenation(breathing_monitor))
-                loop.close()
-                self.had_oxygen_problem = True
-        elif self.had_oxygen_problem:
             loop = asyncio.new_event_loop()
             asyncio.set_event_loop(loop)
             loop.run_until_complete(self.activate_emergency_oxygenation(breathing_monitor))
             loop.close()
-            self.had_oxygen_problem = False
+
+
 
     async def activate_emergency_oxygenation(self, breathing_monitor):
         level = breathing_monitor.breathing_monitor_telemetry_data.SpO2.needed_oxygen()

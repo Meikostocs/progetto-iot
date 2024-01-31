@@ -23,14 +23,6 @@ class LightActuatorResource(resource.Resource): #se cambio qualcosa, viene riman
         self.console = Console(debug=True)
         self.console.print(f"[+] LIGHT ACTUATOR UP")
 
-    def build_senml_json_payload(self):
-        pack = SenmlPack(self.device_name)
-        pack.base_time = int(time.time())
-
-        #serializzo per ogni stato corrente
-        current = SenmlRecord("current_light",value=self.device_info.light_state)
-        pack.add(current)
-        return pack.to_json()
 
 
     async def render_get(self, request):

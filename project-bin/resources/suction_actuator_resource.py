@@ -23,12 +23,6 @@ class SuctionActuatorResource(resource.Resource):
         self.console = Console(debug=True)
         self.console.print(f"[+] Suction Fan {id_room}-{id_bed} UP")
 
-    def build_senml_json_payload(self):
-        pack = SenmlPack(self.device_name)
-        pack.base_time = int(time.time())
-        current = SenmlRecord("current_fan_state", value=self.device_info.suction_state)
-        pack.add(current)
-        return pack.to_json()
 
     async def render_post(self,request):
         self.console.print(f"SUCTION FAN POST AT {self.id_room}-{self.id_bed}")

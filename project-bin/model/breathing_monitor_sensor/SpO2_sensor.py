@@ -19,16 +19,16 @@ class SpO2Sensor:
     
 
     def update_measurements(self):
-        self.measurement += random.uniform(-1,1)
+        self.measurement += random.uniform(-3,1)
         if self.measurement > 100:
             self.measurement = 100
 
     def needed_oxygen(self):
-        if self.measurement > 95:
+        if self.measurement > 95.0:
             return ox_req.OXYGENATION_STOP
-        elif self.measurement > 90:
+        elif self.measurement > 90.0:
             return ox_req.OXYGENATION_LOW
-        elif self.measurement > 85:
+        elif self.measurement > 85.0:
             return ox_req.OXYGENATION_MEDIUM
         else:
             return ox_req.OXYGENATION_HIGH

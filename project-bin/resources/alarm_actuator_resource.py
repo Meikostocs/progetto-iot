@@ -26,13 +26,6 @@ class AlarmActuatorResource(resource.Resource):
         self.console.print(f"[+] AlarmSwitch {id_room}-{id_bed} UP")
 
 
-    def build_senml_json_payload(self):
-        pack = SenmlPack(self.device_name)
-        pack.base_time = int(time.time())
-        state = SenmlRecord("alarm_state",value=self.device_info.alarm_state)
-        pack.add(state)
-        return pack.to_json()
-
     async def render_post(self, request):
         self.console.debug(f"POST AT {self.id_room}-{self.id_bed}")
         self.device_info.switch_alarm_state()
