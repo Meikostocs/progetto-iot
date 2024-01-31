@@ -1,6 +1,6 @@
 import json
 import random
-
+from request.oxygenation_request import OxygenationRequest as ox_req
 class SpO2Sensor:
 
 
@@ -22,7 +22,18 @@ class SpO2Sensor:
         self.measurement += random.uniform(-1,1)
         if self.measurement > 100:
             self.measurement = 100
-        
+
+    def needed_oxygen(self):
+        if self.measurement > 95:
+            return ox_req.OXYGENATION_STOP
+        elif self.measurement > 90:
+            return ox_req.OXYGENATION_LOW
+        elif self.measurement > 85:
+            return ox_req.OXYGENATION_MEDIUM
+        else:
+            return ox_req.OXYGENATION_HIGH
+
+
     def critical_status(self):
         return self.measurement < 95
 

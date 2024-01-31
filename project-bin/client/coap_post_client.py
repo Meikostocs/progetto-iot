@@ -10,13 +10,10 @@ o meglio: nel collector e manager chiamerò la funzione per fare post di sensore
 logging.basicConfig(level=logging.INFO)
 TARGET_ENDPOINT = 'coap://127.0.0.1:5683'
 
-target_light_uri ='/actuation/light'
-target_suction_uri ='/actuation/suction'
-target_alarm_uri ='/actuation/alarm'
 
 async def change_light_state():
     coap_client = await Context.create_client_context()
-    request = Message(code=Code.POST, uri=TARGET_ENDPOINT + target_light_uri)
+    request = Message(code=Code.POST, uri=TARGET_ENDPOINT +'/actuation/light')
     try:
         response = await coap_client.request(request).response
     except Exception as e:
@@ -28,9 +25,9 @@ async def change_light_state():
         else:
             return False
 
-async def change_suction_state():
+async def change_suction_state(id_room, id_bed):
     coap_client = await Context.create_client_context()
-    request = Message(code=Code.POST, uri=TARGET_ENDPOINT + target_suction_uri)
+    request = Message(code=Code.POST, uri=TARGET_ENDPOINT + f'/actuation/{id_room}/{id_bed}/suction')
     try:
         response = await coap_client.request(request).response
     except Exception as e:
@@ -42,9 +39,9 @@ async def change_suction_state():
         else:
             return False
 
-async def change_alarm_state():
+async def change_alarm_state(id_room, id_bed):
     coap_client = await Context.create_client_context()
-    request = Message(code=Code.POST, uri=TARGET_ENDPOINT + target_alarm_uri)
+    request = Message(code=Code.POST, uri=TARGET_ENDPOINT + f'/actuation/{id_room}/{id_bed}/alarm')
     try:
         response = await coap_client.request(request).response
     except Exception as e:

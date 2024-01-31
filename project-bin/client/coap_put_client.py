@@ -13,9 +13,7 @@ logging.basicConfig(level=logging.ERROR) #DEBUG,INFO
 TARGET_ENDPOINT = 'coap://127.0.0.1:5683'
 
 target_light_uri ='/actuation/light'
-target_suction_uri ='/actuation/suction'
-target_alarm_uri ='/actuation/alarm'
-target_oxygenation_uri ='/actuation/oxygenation'
+
 
 async def set_light_state(level): #gli passo il livello a cui voglio switchare
     coap_client = await Context.create_client_context()
@@ -37,9 +35,9 @@ async def set_light_state(level): #gli passo il livello a cui voglio switchare
 
         print(f'Result: {response.code}\nRequest payload: {request.payload.decode("utf-8")}\n')
 
-async def set_suction_state(level):
+async def set_suction_state(level,id_room,id_bed):
     coap_client = await Context.create_client_context()
-    request = Message(code=Code.PUT, uri=TARGET_ENDPOINT + target_suction_uri)
+    request = Message(code=Code.PUT, uri=TARGET_ENDPOINT + f'/actuation/{id_room}/{id_bed}/suction')
     suction_request = SuctionRequestDescriptor(level)
     payload_json_string = suction_request.to_json()
     request.payload = payload_json_string.encode("utf-8")
@@ -52,9 +50,9 @@ async def set_suction_state(level):
         print(
             f'Result: {response.code}\nRequest payload: {request.payload.decode("utf-8")}\n')
 
-async def set_alarm_state(level):
+async def set_alarm_state(level, id_room, id_bed):
     coap_client = await Context.create_client_context()
-    request = Message(code=Code.PUT, uri=TARGET_ENDPOINT + target_alarm_uri)
+    request = Message(code=Code.PUT, uri=TARGET_ENDPOINT + f'/actuation/{id_room}/{id_bed}/alarm')
     alarm_request = AlarmRequestDescriptor(level)
     payload_json_string = alarm_request.to_json()
     request.payload = payload_json_string.encode("utf-8")
@@ -70,28 +68,27 @@ async def set_alarm_state(level):
         print(
             f'Result: {response.code}\nRequest payload: {request.payload.decode("utf-8")}\nResponse:{response_string}\n')
 
-async def set_oxygenation_state():
-    coap_client = await Context.create_client_context()
-    request = Message(code=Code.PUT, uri=TARGET_ENDPOINT + target_oxygenation_uri)
-    oxygenation_request = OxygenationRequest(OxygenationRequest.OXYGENATION_MEDIUM)
-    payload_json_string = oxygenation_request.to_json()
-    request.payload = payload_json_string.encode("utf-8")
-    try:
-        response = await coap_client.request(request).response
-    except Exception as e:
-        print('Failed to fetch resources:')
-        print(e)
-    else:
-        print(
-            f'Result: {response.code}\nRequest payload: {request.payload.decode("utf-8")}\n')
+async def set_oxygenator_state(level, id_room, id_bed):
+        try:
+            coap_client = await Context.create_client_context()
+            request = Message(code=Code.PUT, uri='coap://127.0.0.1:5683' + f'/actuation/{id_room}/{id_bed}/oxygenation')
+            oxygenation_request = OxygenationRequest(level)
+            payload_json_string = oxygenation_request.to_json()
+            request.payload = payload_json_string.encode("utf-8")
+            response = await coap_client.request(request).response
+
+        except Exception as e:
+            console.error('Failed to fetch resources:')
+            print(e)
 
 
 
 async def main():
+    pass
     #await set_light_state()
     #await set_suction_state()
     #await set_alarm_state()
-    await set_oxygenation_state()
+    #await set_oxygenation_state()
 
 if __name__ == "__main__":
     asyncio.get_event_loop().run_until_complete(main())

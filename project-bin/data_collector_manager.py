@@ -42,13 +42,13 @@ async def activate_suction_fan():
         print(f'current humidity: {current_humidity}')
         print(f'current pm10: {current_pm10}')
         if current_humidity >= high_humidity or current_pm10 >= pm10_high:
-            await coap_put_client.set_suction_state(SuctionRequestDescriptor.SUCTION_HIGH)
+            await coap_put_client.set_suction_state(SuctionRequestDescriptor.SUCTION_HIGH,'A1','1')
         elif current_pm10 >= pm10_medium:
-            await coap_put_client.set_suction_state(SuctionRequestDescriptor.SUCTION_MEDIUM)
+            await coap_put_client.set_suction_state(SuctionRequestDescriptor.SUCTION_MEDIUM,'A1','1')
         elif current_humidity >= humidity_threshold or current_pm10 >= pm10_threshold:
-            await coap_put_client.set_suction_state(SuctionRequestDescriptor.SUCTION_LOW)
+            await coap_put_client.set_suction_state(SuctionRequestDescriptor.SUCTION_LOW,'A1','1')
         else:
-            await coap_put_client.set_suction_state(SuctionRequestDescriptor.SUCTION_OFF)
+            await coap_put_client.set_suction_state(SuctionRequestDescriptor.SUCTION_OFF,'A1','1')
 
         await asyncio.sleep(300) #aspetta 5 minuti
 
@@ -60,7 +60,7 @@ async def set_light_time():
         current_time = await get_current_time()
         #current_time = datetime.datetime.now().time()
         if datetime.time(8, 0) <= current_time < datetime.time(13, 0):
-            await coap_put_client.set_light_state(LightRequestDescriptor.LIGHT_HIGH)
+            await coap_put_client.set_light_state(LightRequestDescriptor.LIGHT_HIGH )
         elif datetime.time(13, 0) <= current_time < datetime.time(15, 0):
             await coap_put_client.set_light_state(LightRequestDescriptor.LIGHT_LOW)
         elif datetime.time(15, 0) <= current_time < datetime.time(20, 0):
@@ -74,7 +74,7 @@ async def set_light_time():
 
 
 async def switch_alarm(id_room,id_bed,status):
-    await coap_put_client.set_alarm_state(status)
+    await coap_put_client.set_alarm_state(status,id_room,id_bed)
 
 
 def breathing_monitor_thread_handler():

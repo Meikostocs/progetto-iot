@@ -8,20 +8,16 @@ from model.console import Console
 
 class OxygenationActuatorResource(resource.Resource):
 
-    def __init__(self,device_name):
-        super().__init__()
-        self.device_name = device_name
-        self.device_info = Oxygenator(room_id='1A',bed_id=1)
+    def __init__(self,room_id, bed_id):
+        super(OxygenationActuatorResource,self).__init__()
+        self.room_id = room_id
+        self.bed_id = bed_id
+        self.name = f'oxygenator-{self.room_id}-{self.bed_id}'
+        self.device_info = Oxygenator(room_id=self.room_id,bed_id=self.bed_id)
         self.if_ = "core.a"
-        #self.ct = numbers.media_types_rev['application/senml+json']
         self.rt = "it.project.device.actuator.oxygenator"
         self.title = "Oxigenator"
         self.console = Console(debug=True)
-
-
-    async def render_post(self, request):
-        self.console.debug("POST ON OXYGENATION")
-        return aiocoap.Message(code=Code.CHANGED)
 
 
 
@@ -33,22 +29,22 @@ class OxygenationActuatorResource(resource.Resource):
 
         if change_oxygen_request.oxigenation_state == OxygenationRequest.OXYGENATION_LOW:
             self.device_info.set_oxigenation_state(change_oxygen_request.oxigenation_state)
-            print(f'State changed in: {self.device_info.oxigenation_state}')
+            self.console.print(f'Change in: {self.device_info.oxigenation_state}')
             return aiocoap.Message(code=Code.CHANGED)
 
         if change_oxygen_request.oxigenation_state == OxygenationRequest.OXYGENATION_MEDIUM:
             self.device_info.set_oxigenation_state(change_oxygen_request.oxigenation_state)
-            print(f'State changed in: {self.device_info.oxigenation_state}')
+            self.console.print(f'Change in: {self.device_info.oxigenation_state}')
             return aiocoap.Message(code=Code.CHANGED)
 
         if change_oxygen_request.oxigenation_state == OxygenationRequest.OXYGENATION_HIGH:
             self.device_info.set_oxigenation_state(change_oxygen_request.oxigenation_state)
-            print(f'State changed in: {self.device_info.oxigenation_state}')
+            self.console.print(f'Change in: {self.device_info.oxigenation_state}')
             return aiocoap.Message(code=Code.CHANGED)
 
         if change_oxygen_request.oxigenation_state == OxygenationRequest.OXYGENATION_STOP:
             self.device_info.set_oxigenation_state(change_oxygen_request.oxigenation_state)
-            print(f'State changed in: {self.device_info.oxigenation_state}')
+            self.console.print(f'Change in: {self.device_info.oxigenation_state}')
             return aiocoap.Message(code=Code.CHANGED)
 
         else:

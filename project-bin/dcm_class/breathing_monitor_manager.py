@@ -14,7 +14,7 @@ import aiocoap
 from aiocoap import *
 from request.oxygenation_request import OxygenationRequest
 from request.alarm_request import AlarmRequestDescriptor
-
+from client.coap_put_client import  set_oxygenator_state
 
 class BreathingMonitorManager:
 
@@ -78,12 +78,12 @@ class BreathingMonitorManager:
             self.console.print("someone is dying")
             loop = asyncio.new_event_loop()
             asyncio.set_event_loop(loop)
-            loop.run_until_complete(self.alarm_handler('A1',1,AlarmRequestDescriptor.ALARM_ON))
+            loop.run_until_complete(self.alarm_handler(id_room,id_bed,AlarmRequestDescriptor.ALARM_ON))
             loop.close()
         else:
             loop = asyncio.new_event_loop()
             asyncio.set_event_loop(loop)
-            loop.run_until_complete(self.alarm_handler('A1', 1, AlarmRequestDescriptor.ALARM_OFF))
+            loop.run_until_complete(self.alarm_handler(id_room,id_bed, AlarmRequestDescriptor.ALARM_OFF))
             loop.close()
 
         
@@ -102,20 +102,9 @@ class BreathingMonitorManager:
             loop.close()
         
     async def activate_emergency_oxygenation(self, breathing_monitor):
-        
-        try:
-            coap_client = await Context.create_client_context()
-            request = Message(code=Code.PUT, uri='coap://127.0.0.1:5683' + '/actuation/oxygenation')
-            oxygenation_request = OxygenationRequest(OxygenationRequest.OXYGENATION_LOW)
-            payload_json_string = oxygenation_request.to_json()
-            request.payload = payload_json_string.encode("utf-8")
 
-            response = await coap_client.request(request).response
-            self.console.print(f'Result: {response.code}\nRequest payload: {request.payload.decode("utf-8")}\n')
-        except Exception as e:
-            self.console.error('Failed to fetch resources:')
-            print(e)
-
+        level = breathing_monitor.breathing_monitor_telemetry_data.SpO2.needed_oxygen()
+        await set_oxygenator_state(level, id_room=breathing_monitor.breathing_monitor_descriptor.id_room, id_bed=breathing_monitor.breathing_monitor_descriptor.id_bed)
 
 
 

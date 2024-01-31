@@ -10,10 +10,12 @@ from kpn_senml import *
 
 
 class SuctionActuatorResource(resource.Resource):
-    def __init__(self,device_name):
+    def __init__(self,id_room,id_bed):
         super().__init__()
-        self.device_name = device_name
-        self.device_info = SuctionFan(room_id=1,bed_id=2)
+        self.device_name = f'alarm-{id_room}-{id_bed}'
+        self.id_room = id_room
+        self.id_bed = id_bed
+        self.device_info = SuctionFan(room_id=self.id_room,bed_id=self.id_bed)
         self.if_ = "core.a"
         self.ct = numbers.media_types_rev['application/senml+json']  # TESTO, METTO DENTRO "LOW" O "MEDIUM" O "HIGH"
         self.rt = "it.project.device.actuator.suctionfan"
@@ -40,7 +42,7 @@ class SuctionActuatorResource(resource.Resource):
         json_payload_string = request.payload.decode('UTF-8')
         print(f'LightActuatorResource -> PUT String Payload: {json_payload_string}')
         change_suction_request = SuctionRequestDescriptor(**json.loads(json_payload_string))
-        print(f'Change Suction Request Received:{change_suction_request.suction_state}')
+        print(f'Change Suction Request Received:{change_suction_request.suction_state} FROM {self.id_room}-{self.id_bed}')
 
         if change_suction_request.suction_state == SuctionRequestDescriptor.SUCTION_LOW:
             self.device_info.set_suction_state(change_suction_request.suction_state)
