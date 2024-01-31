@@ -14,9 +14,19 @@ from model.light_statuses import LightStatuses
 from request.light_request import LightRequestDescriptor
 from dcm_class.breathing_monitor_manager import BreathingMonitorManager 
 from dcm_class.infusion_monitor_manager import InfusionMonitorManager
+from request.suction_request import SuctionRequestDescriptor
+import random
+import logging
+import asyncio
+from aiocoap import *
+import json
+import datetime
+from process.all_server_coap import main as all_server_coap
+from request.light_request import LightRequestDescriptor
+from request.suction_request import SuctionRequestDescriptor
+import client.coap_post_client as coap_post_client
 
-async def get_current_time():
-    return datetime.datetime.now().time()
+
 
 async def activate_suction_fan():
     humidity_threshold = 60 #%
@@ -41,6 +51,8 @@ async def activate_suction_fan():
 
         await asyncio.sleep(300) #aspetta 5 minuti
 
+async def get_current_time():
+    return datetime.datetime.now().time()
 
 async def set_light_time():
     while True:
@@ -59,19 +71,87 @@ async def set_light_time():
 
         await asyncio.sleep(2)
 
+
+async def switch_alarm():
+    while True:
+        '''
+        CO2_min =
+        CO2_max =
+        EtCO2_min =
+        EtCO2_max =
+        SpO2_min =
+        SpO2_min =
+        RESP_max =
+
+        temp_max =
+
+        heart_rate_min =
+        heart_rate_max =
+        NIBP_min =
+        NIBP_max =
+        IBP_min =
+        IBP_max =
+        ECG_min =
+        ECG_max =
+        pressure_avarage_min =
+        pressure_avarage_max =
+
+        Temperature_min =
+        Temperature_max =
+        Battery_min =
+        Battery_max =
+
+        
+        Monitor respirazione:
+        CO2 =
+        EtCO2 =
+        SpO2 =
+        RESP =
+
+        Monitor infusione:
+        temp = 
+
+        Monitor Cuore:
+        heart_rate = 
+        NIBP = 
+        IBP = 
+        ECG =
+        pressure_avarage = 
+
+        Environment Monitoring :
+        Temperature =
+        Battery =
+        '''
+        # consumer MQTT, LEGGO PARAMENTRI
+        # GET..
+        return 0  # get_..
+
+
 def breathing_monitor_thread_handler():
     BreathingMonitorManager().run()
 
 def infusion_monitor_thread_handler():
     InfusionMonitorManager().run()
 
+def set_light_time_handler():
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+    loop.run_until_complete(set_light_time())
+    loop.close()
+
+def activate_suction_fan_handler():
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+    loop.run_until_complete(activate_suction_fan())
+    loop.close()
+
 async def main():
     infusion_monitor_thread  = threading.Thread(target=infusion_monitor_thread_handler).start()
     breathing_monitor_thread = threading.Thread(target=breathing_monitor_thread_handler).start()
+    set_light_time_thread = threading.Thread(target=set_light_time_handler).start()
+    activate_suction_fan_thread = threading.Thread(target=activate_suction_fan_handler).start()
 
-    await set_light_time()
     #asyncio.create_task(all_server_coap())
-
 
 
 if __name__ == "__main__":
