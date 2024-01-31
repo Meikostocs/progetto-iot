@@ -27,9 +27,9 @@ class OxygenationActuatorResource(resource.Resource):
 
     async def render_put(self, request):
         json_payload_string = request.payload.decode('UTF-8')
-        print(f'OxygenationActuatorResource -> PUT String Payload: {json_payload_string}')
+        self.console.debug(f'OxygenationActuatorResource -> PUT String Payload: {json_payload_string}')
         change_oxygen_request = OxygenationRequest(**json.loads(json_payload_string))
-        print(f'Change Light Request Received: {change_oxygen_request.oxigenation_state}')
+        self.console.debug(f'Change Oxygenation Request Received: {change_oxygen_request.oxigenation_state}')
 
         if change_oxygen_request.oxigenation_state == OxygenationRequest.OXYGENATION_LOW:
             self.device_info.set_oxigenation_state(change_oxygen_request.oxigenation_state)

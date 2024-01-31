@@ -1,6 +1,6 @@
 import json
-from infusion_monitor_sensor.temperature_sensor import TemperatureSensor
-from battery import Battery
+from model.infusion_monitor_sensor.temperature_sensor import TemperatureSensor
+from model.battery import Battery
 
 class InfusionMonitorTelemetryData:
     def __init__(self,battery_level=None, temp_unit='C', temp_measurement=None):

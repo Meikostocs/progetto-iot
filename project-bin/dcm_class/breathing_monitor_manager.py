@@ -25,6 +25,7 @@ class BreathingMonitorManager:
                             MqttConfigurationParameters.TELEMETRY_TOPIC,
                             MqttConfigurationParameters.BREATHING_MONITOR_TOPIC
                             )
+        self.had_oxygen_problem  = False
 
         self.mqtt_subscriber = MQTTSubscriber(
             broker_address     = MqttConfigurationParameters.BROKER_ADDRESS,
@@ -63,7 +64,7 @@ class BreathingMonitorManager:
         breathing_monitor = BreathingMonitor(id_room=id_room,
                             id_bed=id_bed,
                             spo2_measurement=spo2_measurement,
-                            resp_measurement=spo2_measurement,
+                            resp_measurement=resp_measurement,
                             co2_measurement=co2_measurement,
                             co2_unit=co2_unit,
                             etco2_concentration=etco2_concentration,
@@ -76,18 +77,23 @@ class BreathingMonitorManager:
         
 
         if breathing_monitor.breathing_monitor_telemetry_data.SpO2.critical_status():
-            pass
-            #loop = asyncio.new_event_loop()
-            #asyncio.set_event_loop(loop)
-            #loop.run_until_complete(self.activate_emergency_oxygenation(breathing_monitor))
-            #loop.close()
-            
+            self.had_oxygen_problem = True
+            loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(loop)
+            loop.run_until_complete(self.activate_emergency_oxygenation(breathing_monitor))
+            loop.close()
+        elif self.had_oxygen_problem:
+            self.had_oxygen_problem = False
+            loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(loop)
+            loop.run_until_complete(self.activate_emergency_oxygenation(breathing_monitor))
+            loop.close()
         
     async def activate_emergency_oxygenation(self, breathing_monitor):
         
         try:
             coap_client = await Context.create_client_context()
-            request = Message(code=Code.PUT, uri='coap://127.0.0.1:5683' + '/oxygenation')
+            request = Message(code=Code.PUT, uri='coap://127.0.0.1:5683' + '/actuation/oxygenation')
             oxygenation_request = OxygenationRequest(OxygenationRequest.OXYGENATION_LOW)
             payload_json_string = oxygenation_request.to_json()
             request.payload = payload_json_string.encode("utf-8")

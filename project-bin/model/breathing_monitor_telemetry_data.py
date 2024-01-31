@@ -1,8 +1,8 @@
-from breathing_monitor_sensor.CO2_sensor import Co2Sensor
-from breathing_monitor_sensor.SpO2_sensor import SpO2Sensor
-from breathing_monitor_sensor.RESP_sensor import RESPSensor
-from breathing_monitor_sensor.EtCO2_sensor import EtCO2Sensor
-from battery import Battery
+from model.breathing_monitor_sensor.CO2_sensor import Co2Sensor
+from model.breathing_monitor_sensor.SpO2_sensor import SpO2Sensor
+from model.breathing_monitor_sensor.RESP_sensor import RESPSensor
+from model.breathing_monitor_sensor.EtCO2_sensor import EtCO2Sensor
+from model.battery import Battery
 import json 
 
 class BreathingMonitorTelemtryData:

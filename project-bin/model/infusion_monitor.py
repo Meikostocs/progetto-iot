@@ -1,6 +1,6 @@
 import json
-from infusion_monitor_descriptor import InfusionMonitorDescriptor
-from infusion_monitor_telemetry_data import InfusionMonitorTelemetryData
+from model.infusion_monitor_descriptor import InfusionMonitorDescriptor
+from model.infusion_monitor_telemetry_data import InfusionMonitorTelemetryData
 
 class InfusionMonitor:
 

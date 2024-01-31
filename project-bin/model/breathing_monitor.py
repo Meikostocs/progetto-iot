@@ -1,6 +1,6 @@
 import json
-from breathing_monitor_descriptor import BreathingMonitorDescriptor
-from breathing_monitor_telemetry_data import BreathingMonitorTelemtryData
+from model.breathing_monitor_descriptor import BreathingMonitorDescriptor
+from model.breathing_monitor_telemetry_data import BreathingMonitorTelemtryData
 
 class BreathingMonitor:
 
