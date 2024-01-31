@@ -12,8 +12,6 @@ logging.getLogger("coap-server").setLevel(logging.INFO)
 def main():
 
     light_smart_obj="light-smart-obj0001"
-
-    # Resource tree creation
     root = resource.Site()
 
     root.add_resource(['.well-known', 'core'], resource.WKCResource(root.get_resources_as_linkheader, impl_info=None))

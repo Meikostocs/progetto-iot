@@ -3,7 +3,6 @@ import random
 
 class TemperatureSensor:
 
-
     def __init__(self, measurement=None, unit="C"):
         """
         Temperature Sensor
@@ -42,7 +41,7 @@ class TemperatureSensor:
 
         #Return to original unit
         if change_unit:
-            self.to_fahrenheit
+            self.to_fahrenheit()
     
     def critical_status(self):
         change_unit = False
@@ -51,12 +50,12 @@ class TemperatureSensor:
             self.to_celsius()
         critical = self.measurement < 36 or self.measurement>37.5
         if change_unit:
-            self.to_fahrenheit
+            self.to_fahrenheit()
         return critical
 
     def to_fahrenheit(self):
         if self.unit=='C':
-            self.measurement = self.mesurements*1.8+32
+            self.measurement = self.measurement*1.8+32
             self.unit = "F"
 
     def to_celsius(self):

@@ -16,7 +16,6 @@ class SpO2Sensor:
         else:
             self.measurement = measurement
         self.unit = "%"
-    
 
     def update_measurements(self):
         self.measurement += random.uniform(-3,1)

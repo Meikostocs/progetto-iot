@@ -2,7 +2,6 @@ import logging
 import asyncio
 import aiocoap.resource as resource
 import aiocoap
-
 from resources.alarm_actuator_resource import AlarmActuatorResource
 
 logging.basicConfig(level=logging.INFO)

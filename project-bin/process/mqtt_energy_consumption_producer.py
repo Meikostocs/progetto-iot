@@ -20,6 +20,7 @@ def publish_telemetry_data():
     mqtt_client.publish(target_topic, device_payload_string, 2, False)
     print(f"Telemetry Data Published: Topic: {target_topic}\n Payload: {device_payload_string}")
 
+
 light1 = LightSmartObj(room_id="A1",bed_id=1)
 message_limit = 100
 mqtt_client = mqtt.Client(light1.room_id)
@@ -31,8 +32,6 @@ mqtt_client.on_connect = on_connect
 print("Connecting to " + MqttConfigurationParameters.BROKER_ADDRESS + " port: " + str(MqttConfigurationParameters.BROKER_PORT))
 mqtt_client.connect(MqttConfigurationParameters.BROKER_ADDRESS, MqttConfigurationParameters.BROKER_PORT)
 mqtt_client.loop_start()
-
-
 
 
 for message_id in range(message_limit):

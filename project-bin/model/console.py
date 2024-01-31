@@ -12,4 +12,4 @@ class Console:
             print(Fore.YELLOW + '[DEBUG]: '+Style.RESET_ALL + message)
     
     def print(self,message):
-        print(Fore.GREEN+ '[PRINT]: '+Style.RESET_ALL + message)
+        print(Fore.GREEN + '[PRINT]: '+Style.RESET_ALL + message)

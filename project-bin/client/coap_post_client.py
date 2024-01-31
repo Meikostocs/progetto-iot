@@ -1,7 +1,6 @@
 import logging
 import asyncio
 from aiocoap import *
-import json
 
 '''
 POST is not used in the dcem!

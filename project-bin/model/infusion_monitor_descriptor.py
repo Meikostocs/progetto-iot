@@ -1,8 +1,8 @@
 import json
 
+
 class InfusionMonitorDescriptor:
-    
-    
+
     def __init__(self, id_room, id_bed):
         """
         Describes the data for the Infusion Monitor. 
@@ -13,12 +13,7 @@ class InfusionMonitorDescriptor:
         :type id_bed: str
         """
         self.id_room = id_room
-        self.id_bed  = id_bed
+        self.id_bed = id_bed
 
-        
     def to_json(self):
-        return json.dumps(self,default=lambda o: o.__dict__)
-
-
-    
-    
+        return json.dumps(self, default=lambda o: o.__dict__)

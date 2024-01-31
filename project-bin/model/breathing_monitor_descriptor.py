@@ -15,10 +15,5 @@ class BreathingMonitorDescriptor:
         self.id_room = id_room
         self.id_bed  = id_bed
 
-        
     def to_json(self):
         return json.dumps(self,default=lambda o: o.__dict__)
-
-
-    
-    

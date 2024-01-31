@@ -22,5 +22,4 @@ class Oxygenator:
             self.oxigenation_state = oxi_req.OXYGENATION_STOP
 
     def to_json(self):
-        #return json.dumps(self, default=lambda o: o.__dict__)
         return json.dumps(self, default=lambda o: o.value if isinstance(o, Enum) else o.__dict__)

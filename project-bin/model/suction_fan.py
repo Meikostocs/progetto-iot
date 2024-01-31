@@ -31,5 +31,4 @@ class SuctionFan:
                 self.suction_state = level
 
     def to_json(self):
-        #return json.dumps(self, default=lambda o: o.__dict__)
         return json.dumps(self, default=lambda o: o.value if isinstance(o, Enum) else o.__dict__)

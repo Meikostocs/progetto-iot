@@ -1,9 +1,6 @@
 import json
 import random
 
-
-
-
 class Enviorement_monitoring_sensor:
 
     def __init__(self):

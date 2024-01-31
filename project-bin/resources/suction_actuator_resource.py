@@ -1,12 +1,10 @@
 import aiocoap.resource as resource
 import aiocoap
 import aiocoap.numbers as numbers
-import time
 import json
 from aiocoap.numbers.codes import Code
 from request.suction_request import SuctionRequestDescriptor
 from model.suction_fan import SuctionFan
-from kpn_senml import *
 from model.console import Console
 
 class SuctionActuatorResource(resource.Resource):
@@ -17,25 +15,22 @@ class SuctionActuatorResource(resource.Resource):
         self.id_bed = id_bed
         self.device_info = SuctionFan(room_id=self.id_room,bed_id=self.id_bed)
         self.if_ = "core.a"
-        self.ct = numbers.media_types_rev['application/senml+json']  # TESTO, METTO DENTRO "LOW" O "MEDIUM" O "HIGH"
+        self.ct = numbers.media_types_rev['application/senml+json']
         self.rt = "it.project.device.actuator.suctionfan"
         self.title = "Suction Fan"
         self.console = Console(debug=True)
-        self.console.print(f"[+] Suction Fan {id_room}-{id_bed} UP")
-
+        self.console.print(f"[+] SUCTION FAN {id_room}-{id_bed} UP")
 
     async def render_post(self,request):
-        self.console.print(f"SUCTION FAN POST AT {self.id_room}-{self.id_bed}")
-        # self.coffee_history.increase_short_coffee()
+        self.console.print(f"POST AT SUCTION FAN FROM {self.id_room}-{self.id_bed}")
         self.device_info.switch_suction_state()
         self.console.debug(f'STATE CHANGED IN: {self.device_info.suction_state}')
         return aiocoap.Message(code=Code.CHANGED)
 
     async def render_put(self, request):
-        #print(f'SuctionActuatorResource -> PUT Byte payload: {request.payload}')
         json_payload_string = request.payload.decode('UTF-8')
         change_suction_request = SuctionRequestDescriptor(**json.loads(json_payload_string))
-        self.console.print(f"SUCTION FAN PUT AT {self.id_room}-{self.id_bed}")
+        self.console.print(f"PUT AT SUCTION FAN FROM {self.id_room}-{self.id_bed}")
         self.console.debug(f'PUT PAYLOAD : {json_payload_string}')
         self.console.debug(f'SWITCH STATUS INTO {change_suction_request.suction_state}')
 

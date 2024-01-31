@@ -34,7 +34,7 @@ class Co2Sensor:
         
         # Perform update
         self.measurement += random.uniform(-1,1)
-        if self.measurement<= 25:
+        if self.measurement <= 25:
             self.measurement = 25
         elif self.measurement >= 55:
             self.measurement = 55 
@@ -59,7 +59,7 @@ class Co2Sensor:
         if self.unit == 'kPa':
             change_unit = True
             self.to_mmhg()   
-        is_critical = self.measurement<35 or self.measurement>45
+        is_critical = self.measurement < 35 or self.measurement > 45
         if change_unit:
             self.to_kpa()
         return is_critical
