@@ -1,12 +1,10 @@
-import sys
-sys.path.append("resources")
 import logging
 import asyncio
 import aiocoap.resource as resource
 import aiocoap
-from alarm_actuator_resource import AlarmActuatorResource
-from light_actuator_resource import LightActuatorResource
-from suction_actuator_resource import SuctionActuatorResource
+from resources.alarm_actuator_resource import AlarmActuatorResource
+from resources.light_actuator_resource import LightActuatorResource
+from resources.suction_actuator_resource import SuctionActuatorResource
 
 logging.basicConfig(level=logging.INFO)
 logging.getLogger("coap-server").setLevel(logging.INFO)
@@ -19,7 +17,7 @@ def main():
 
     root = resource.Site()
 
-    #root.add_resource(['.well-known', 'core'], resource.WKCResource(root.get_resources_as_linkheader, impl_info=None))
+    root.add_resource(['.well-known', 'core'], resource.WKCResource(root.get_resources_as_linkheader, impl_info=None))
     root.add_resource(['actuation','alarm'],AlarmActuatorResource(alarm_switch))
     root.add_resource(['actuation', 'light'], LightActuatorResource(light_smart_obj))
     root.add_resource(['actuation', 'suction'], SuctionActuatorResource(suction_fan))

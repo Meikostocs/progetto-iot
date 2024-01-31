@@ -13,7 +13,6 @@ class TemperatureSensor:
         :param unit: unit of measure
         :type unit: String ["C", "F"]
         """
-        
         self.unit = unit
         self.measurement = measurement
             
@@ -43,16 +42,7 @@ class TemperatureSensor:
         #Return to original unit
         if change_unit:
             self.to_fahrenheit
-    
-    def critical_status(self):
-        change_unit = False
-        if self.unit == 'F':
-            change_unit = 'C'
-            self.to_celsius()
-        critical = self.measurement < 36 or self.measurement>37.5
-        if change_unit:
-            self.to_fahrenheit
-        return critical
+        
 
     def to_fahrenheit(self):
         if self.unit=='C':

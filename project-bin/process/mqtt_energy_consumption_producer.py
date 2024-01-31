@@ -17,7 +17,7 @@ def publish_telemetry_data():
     device_payload_string = light1.to_json()
 
 
-    mqtt_client.publish(target_topic, device_payload_string, 0, False)
+    mqtt_client.publish(target_topic, device_payload_string, 2, False)
     print(f"Telemetry Data Published: Topic: {target_topic}\n Payload: {device_payload_string}")
 
 light1 = LightSmartObj(room_id="A1",bed_id=1)

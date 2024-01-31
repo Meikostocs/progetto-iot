@@ -2,6 +2,8 @@ import logging
 import asyncio
 import aiocoap.resource as resource
 import aiocoap
+import sys
+sys.path.append('../')
 from resources.alarm_actuator_resource import AlarmActuatorResource
 from resources.light_actuator_resource import LightActuatorResource
 from resources.suction_actuator_resource import SuctionActuatorResource

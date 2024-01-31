@@ -26,11 +26,7 @@ def send_messages(message_limit):
 
 # Init breathing monitor and console
 breathing_monitor = BreathingMonitor('A1','1')
-console = Console(debug=True)message):
-        message_payload = str(message.payload.decode("utf-8"))
-        self.console.print("Telmessage):
-        message_payload = str(message.payload.decode("utf-8"))
-        self.console.print("Tel
+console = Console(debug=True)
 brathing_monitor_id = "python-breathing_monitor-{0}".format(MqttConfigurationParameters.MQTT_USERNAME)
 target_topic = "{0}/{1}/{2}/{3}/{4}".format(
         MqttConfigurationParameters.MQTT_BASIC_TOPIC,

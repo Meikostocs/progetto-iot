@@ -9,7 +9,7 @@ from request.suction_request import SuctionRequestDescriptor
 from request.alarm_request import AlarmRequestDescriptor
 
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.ERROR) #DEBUG,INFO
 TARGET_ENDPOINT = 'coap://127.0.0.1:5683'
 
 target_light_uri ='/actuation/light'
@@ -31,15 +31,15 @@ async def set_light_state(level): #gli passo il livello a cui voglio switchare
         print('Failed to fetch resources:')
         print(e)
     else:
-        print(response)
-        response_string = response.payload.decode("utf-8")
+        #print(response)
+        #response_string = response.payload.decode("utf-8")
 
-        print(f'Result: {response.code}\nRequest payload: {request.payload.decode("utf-8")}\nResponse:{response_string}\n')
+        print(f'Result: {response.code}\nRequest payload: {request.payload.decode("utf-8")}\n')
 
-async def set_suction_state():
+async def set_suction_state(level):
     coap_client = await Context.create_client_context()
     request = Message(code=Code.PUT, uri=TARGET_ENDPOINT + target_suction_uri)
-    suction_request = SuctionRequestDescriptor(SuctionRequestDescriptor.SUCTION_MEDIUM)
+    suction_request = SuctionRequestDescriptor(level)
     payload_json_string = suction_request.to_json()
     request.payload = payload_json_string.encode("utf-8")
     try:
@@ -48,16 +48,13 @@ async def set_suction_state():
         print('Failed to fetch resources:')
         print(e)
     else:
-        print(response)
-        response_string = response.payload.decode("utf-8")
-
         print(
-            f'Result: {response.code}\nRequest payload: {request.payload.decode("utf-8")}\nResponse:{response_string}\n')
+            f'Result: {response.code}\nRequest payload: {request.payload.decode("utf-8")}\n')
 
-async def set_alarm_state():
+async def set_alarm_state(level):
     coap_client = await Context.create_client_context()
     request = Message(code=Code.PUT, uri=TARGET_ENDPOINT + target_alarm_uri)
-    alarm_request = AlarmRequestDescriptor(AlarmRequestDescriptor.ALARM_ON)
+    alarm_request = AlarmRequestDescriptor(level)
     payload_json_string = alarm_request.to_json()
     request.payload = payload_json_string.encode("utf-8")
     try:

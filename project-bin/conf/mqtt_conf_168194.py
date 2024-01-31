@@ -9,3 +9,4 @@ class MqttConfigurationParameters(object):
     MQTT_BASIC_TOPIC = f'/iot/user/{MQTT_USERNAME}'
     TELEMETRY_TOPIC = "telemetry"
     ENERGY_CONSUMPTION_TOPIC ="light_energy_consumption"
+    ENVIRONMENT_TOPIC ="environment"
