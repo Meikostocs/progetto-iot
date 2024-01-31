@@ -1,13 +1,20 @@
 import logging
 import asyncio
 from aiocoap import *
-import json
-import aiocoap
 from aiocoap.numbers.codes import Code
 from request.light_request import LightRequestDescriptor
 from request.suction_request import SuctionRequestDescriptor
 from request.alarm_request import AlarmRequestDescriptor
 from request.oxygenation_request import OxygenationRequest
+
+'''
+I'll make a different post for each actuator, so I can
+trigger an actuation of my choice on a actuator,
+or better: in the collector and manager I will call the function to change actuator status based on
+the occurrence of an event
+
+change_light_state: none room_id and bed_id because it is shared between the rooms.
+'''
 
 logging.basicConfig(level=logging.ERROR) #DEBUG,INFO
 TARGET_ENDPOINT = 'coap://127.0.0.1:5683'
@@ -15,24 +22,18 @@ TARGET_ENDPOINT = 'coap://127.0.0.1:5683'
 target_light_uri ='/actuation/light'
 
 
-async def set_light_state(level): #gli passo il livello a cui voglio switchare
+async def set_light_state(level):
     coap_client = await Context.create_client_context()
     request = Message(code=Code.PUT, uri=TARGET_ENDPOINT + target_light_uri)
-    #light_request = LightRequestDescriptor(LightRequestDescriptor.LIGHT_MEDIUM) #request del livelo a cui voglio cambiare ???
     light_request = LightRequestDescriptor(level)
     payload_json_string = light_request.to_json()
-
     request.payload = payload_json_string.encode("utf-8")
-    #request.payload = json.dumps({'light_state':LightRequestDescriptor.LIGHT_MEDIUM}).encode("utf-8")
     try:
         response = await coap_client.request(request).response
     except Exception as e:
         print('Failed to fetch resources:')
         print(e)
     else:
-        #print(response)
-        #response_string = response.payload.decode("utf-8")
-
         print(f'Result: {response.code}\nRequest payload: {request.payload.decode("utf-8")}\n')
 
 async def set_suction_state(level,id_room,id_bed):
@@ -62,7 +63,6 @@ async def set_alarm_state(level, id_room, id_bed):
         print('Failed to fetch resources:')
         print(e)
     else:
-        print(response)
         response_string = response.payload.decode("utf-8")
 
         print(
@@ -78,10 +78,13 @@ async def set_oxygenator_state(level, id_room, id_bed):
             response = await coap_client.request(request).response
 
         except Exception as e:
-            console.error('Failed to fetch resources:')
+            print('Failed to fetch resources:')
             print(e)
 
 
+'''
+main() is used for debug
+'''
 
 async def main():
     pass

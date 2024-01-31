@@ -1,10 +1,12 @@
 import logging
 import asyncio
-import aiocoap
 import link_header
-from aiocoap.numbers.codes import Code
 from aiocoap import *
 
+'''
+server started, if I run this script it gives me a GET towards /.well-known/core 
+to discover the available resources
+'''
 logging.basicConfig(level=logging.INFO)
 
 
