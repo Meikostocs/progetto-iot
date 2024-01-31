@@ -8,10 +8,12 @@ from conf.mqtt_conf_166317  import MqttConfigurationParameters
 from model.infusion_monitor import InfusionMonitor
 from model.console          import Console
 from model.mqtt_subscriber  import MQTTSubscriber
+from request.alarm_request import AlarmRequestDescriptor
+import asyncio
 
 class InfusionMonitorManager:
 
-    def __init__(self):
+    def __init__(self,alarm_handler = None):
 
         self.console = Console(debug=True)
         self.infusion_monitor_id = "python-infusion-subscriber-{0}".format(MqttConfigurationParameters.MQTT_USERNAME)
@@ -29,6 +31,7 @@ class InfusionMonitorManager:
             on_connect_handler = self.on_connect,
             on_message_handler = self.on_message
         )
+        self.alarm_handler = alarm_handler
 
 
     def run(self):
@@ -54,6 +57,15 @@ class InfusionMonitorManager:
                             )     
         if infusion_monitor.critical_status():
             self.console.print("someone is dying")
+            loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(loop)
+            loop.run_until_complete(self.alarm_handler('A1', 1, AlarmRequestDescriptor.ALARM_ON))
+            loop.close()
+        else:
+            loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(loop)
+            loop.run_until_complete(self.alarm_handler('A1', 1, AlarmRequestDescriptor.ALARM_OFF))
+            loop.close()
 
 
 

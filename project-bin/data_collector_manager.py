@@ -50,7 +50,7 @@ async def activate_suction_fan():
         else:
             await coap_put_client.set_suction_state(SuctionRequestDescriptor.SUCTION_OFF)
 
-        await asyncio.sleep(5) #aspetta 5 minuti
+        await asyncio.sleep(300) #aspetta 5 minuti
 
 async def get_current_time():
     return datetime.datetime.now().time()
@@ -70,7 +70,7 @@ async def set_light_time():
         else:
             await coap_put_client.set_light_state(LightRequestDescriptor.TURN_OFF)
 
-        await asyncio.sleep(5)
+        await asyncio.sleep(3600)
 
 
 async def switch_alarm(id_room,id_bed,status):
@@ -81,7 +81,7 @@ def breathing_monitor_thread_handler():
     BreathingMonitorManager(alarm_handler=switch_alarm).run()
 
 def infusion_monitor_thread_handler():
-    InfusionMonitorManager().run()
+    InfusionMonitorManager(alarm_handler=switch_alarm).run()
 
 def set_light_time_handler():
     loop = asyncio.new_event_loop()
