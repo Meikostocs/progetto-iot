@@ -75,6 +75,7 @@ async def set_light_time():
 async def switch_alarm():
     while True:
         '''
+
         CO2_min =
         CO2_max =
         EtCO2_min =
@@ -101,7 +102,9 @@ async def switch_alarm():
         Battery_min =
         Battery_max =
 
-        
+
+        '''
+        main
         Monitor respirazione:
         CO2 =
         EtCO2 =

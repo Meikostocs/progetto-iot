@@ -14,7 +14,7 @@ class EtCO2Sensor:
         :type pressure: float [%]
         """
         if concentration is None:
-            self.concentration = random.uniform(2,2)
+            self.concentration = random.uniform(3,5)
         else:
             self.concentration = concentration
         
@@ -38,8 +38,6 @@ class EtCO2Sensor:
         elif self.concentration >= 8:
             self.concentration = 8
 
-    def critical_status(self):
-        return self.pressure<35 or self.pressure>45 or self.concentration<3 or self.concentration>5
-
+        
     def to_json(self):
         return json.dumps(self, default=lambda o: o.__dict__)

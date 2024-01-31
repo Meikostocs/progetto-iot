@@ -33,7 +33,7 @@ class Co2Sensor:
             self.to_mmhg()
         
         # Perform update
-        self.measurement += random.uniform(-1,1)
+        self.measurement += random.uniform(-5,5)
         if self.measurement<= 25:
             self.measurement = 25
         elif self.measurement >= 55:
@@ -53,16 +53,6 @@ class Co2Sensor:
         if self.unit == 'mmHg':
             self.unit = "kPa"
             self.measurement = self.measurement*0.13332236
-
-    def critical_status(self):
-        change_unit = False
-        if self.unit == 'kPa':
-            change_unit = True
-            self.to_mmhg()   
-        is_critical = self.measurement<35 or self.measurement>45
-        if change_unit:
-            self.to_kpa()
-        return is_critical
 
     def to_json(self):
         return json.dumps(self, default=lambda o: o.__dict__)

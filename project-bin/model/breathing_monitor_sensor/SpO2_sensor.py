@@ -19,13 +19,10 @@ class SpO2Sensor:
     
 
     def update_measurements(self):
-        self.measurement += random.uniform(-1,1)
+        self.measurement += random.uniform(-5,5)
         if self.measurement > 100:
             self.measurement = 100
         
-    def critical_status(self):
-        return self.measurement < 95
-
     def to_json(self):
         return json.dumps(self, default=lambda o: o.__dict__)
 

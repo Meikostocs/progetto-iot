@@ -7,7 +7,7 @@ import json
 triggerare a mia scelta una attuazione su un determinato sensore,
 o meglio: nel collector e manager chiamerò la funzione per fare post di sensore x'''
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.ERROR) #INFO,DEBUG
 TARGET_ENDPOINT = 'coap://127.0.0.1:5683'
 
 target_light_uri ='/actuation/light'

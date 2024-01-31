@@ -1,4 +1,6 @@
 import json
+import random
+
 from model.light_statuses import LightStatuses as ls
 from enum import Enum
 from aiocoap import *
@@ -62,6 +64,8 @@ class LightSmartObj:
             self.energy_consumption_sensor = 6
         if self.light_state == ls.LIGHT_HIGH.value:
             self.energy_consumption_sensor = 10
+
+
 
     def to_json(self):
         return json.dumps(self, default=lambda o: o.value if isinstance(o, Enum) else o.__dict__)
