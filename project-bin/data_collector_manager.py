@@ -154,11 +154,25 @@ def activate_suction_fan_handler():
     loop.run_until_complete(activate_suction_fan())
     loop.close()
 
+def activate_oxygenation_handler():
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+    loop.run_until_complete(activate_oxygenation())
+    loop.close()
+
 async def main():
     infusion_monitor_thread  = threading.Thread(target=infusion_monitor_thread_handler).start()
     breathing_monitor_thread = threading.Thread(target=breathing_monitor_thread_handler).start()
     set_light_time_thread = threading.Thread(target=set_light_time_handler).start()
     activate_suction_fan_thread = threading.Thread(target=activate_suction_fan_handler).start()
+    activate_oxygenation_fan_thread = threading.Thread(target=activate_oxygenation_handler).start()
+    
+
+
+    infusion_monitor_thread.join()
+    breathing_monitor_thread.join()
+    set_light_time_thread.join()
+    activate_suction_fan_thread.join()
 
     #asyncio.create_task(all_server_coap())
 

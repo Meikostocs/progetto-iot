@@ -15,7 +15,7 @@ TARGET_ENDPOINT = 'coap://127.0.0.1:5683'
 target_light_uri ='/actuation/light'
 target_suction_uri ='/actuation/suction'
 target_alarm_uri ='/actuation/alarm'
-target_ooxygenation_uri ='/actuation/oxygenation'
+target_oxygenation_uri ='/actuation/oxygenation'
 
 async def set_light_state(level): #gli passo il livello a cui voglio switchare
     coap_client = await Context.create_client_context()

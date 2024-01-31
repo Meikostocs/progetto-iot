@@ -3,7 +3,7 @@ from request.oxygenation_request import OxygenationRequest as oxi_req
 class Oxygenator:
 
     def __init__(self, room_id, bed_id):
-        self.room _id= room_id
+        self.room_id= room_id
         self.bed_id = bed_id
         self.oxigenation_state = oxi_req.OXYGENATION_STOP
 

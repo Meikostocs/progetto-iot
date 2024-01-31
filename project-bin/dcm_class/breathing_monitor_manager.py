@@ -76,14 +76,15 @@ class BreathingMonitorManager:
         
 
         if breathing_monitor.breathing_monitor_telemetry_data.SpO2.critical_status():
-        #    loop = asyncio.new_event_loop()
-        #    asyncio.set_event_loop(loop)
-        #    loop.run_until_complete(self.activate_emergency_oxygenation(breathing_monitor))
-        #    loop.close()
             pass
+            #loop = asyncio.new_event_loop()
+            #asyncio.set_event_loop(loop)
+            #loop.run_until_complete(self.activate_emergency_oxygenation(breathing_monitor))
+            #loop.close()
+            
         
     async def activate_emergency_oxygenation(self, breathing_monitor):
-        pass
+        
         try:
             coap_client = await Context.create_client_context()
             request = Message(code=Code.PUT, uri='coap://127.0.0.1:5683' + '/oxygenation')
