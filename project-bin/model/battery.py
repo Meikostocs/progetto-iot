@@ -9,16 +9,15 @@ class Battery:
             self.level = 100.0
         self.unit     = "%"
         self.capacity = capacity
-    
+
     def update_measurements(self):
         self.level = self.level - random.uniform(1,5)
         if self.level<1:
             self.level = 0
-    
+
     def critical_status(self):
-        print (self.level)
         return self.level < 20
-        
+
 
     def to_json(self):
         return json.dumps(self,default=lambda o: o.__dict__)
