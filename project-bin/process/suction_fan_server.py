@@ -6,7 +6,6 @@ from resources.suction_actuator_resource import SuctionActuatorResource
 
 
 logging.basicConfig(level=logging.INFO)
-#logging.getLogger("coap-server").setLevel(logging.INFO)
 logging.getLogger("coap-server").setLevel(logging.DEBUG)
 
 
@@ -17,8 +16,9 @@ def main():
     # Resource tree creation
     root = resource.Site()
 
-    #root.add_resource(['.well-known', 'core'], resource.WKCResource(root.get_resources_as_linkheader, impl_info=None))
-    root.add_resource(['actuation','suction'],SuctionActuatorResource(suction_fan))
+    root.add_resource(['.well-known', 'core'], resource.WKCResource(root.get_resources_as_linkheader, impl_info=None))
+    root.add_resource(['actuation','A1','1', 'suction'], SuctionActuatorResource(id_room='A1', id_bed='1'))
+
     asyncio.Task(aiocoap.Context.create_server_context(root, bind=('127.0.0.1', 5683)))
     asyncio.get_event_loop().run_forever()
 
