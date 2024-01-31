@@ -4,6 +4,7 @@ from enum import Enum
 from aiocoap import *
 import request
 import asyncio
+from client.coap_get_client_lightsmartobj import get_coap_message
 
 
 class LightSmartObj:
@@ -45,15 +46,17 @@ class LightSmartObj:
             self.energy_consumption_sensor = 6
         if self.light_state == ls.LIGHT_HIGH.value:
             self.energy_consumption_sensor = 10
+    '''
+        async def get_coap_message(self):
+            protocol = await Context.create_client_context()
+            request = Message(code=Code.GET, uri='coap://127.0.0.1:5683/actuation/light')
+            response = await protocol.request(request).response
+            response_string = response.payload.decode("utf-8")
+            return json.loads(response_string)
+    '''
 
-    async def get_coap_message(self):
-        protocol = await Context.create_client_context()
-        request = Message(code=Code.GET, uri='coap://127.0.0.1:5683/actuation/light')
-        response = await protocol.request(request).response
-        response_string = response.payload.decode("utf-8")
-        return json.loads(response_string)
     def update_energy_consumption_mqtt(self):
-        new_state = asyncio.get_event_loop().run_until_complete(self.get_coap_message())
+        new_state = asyncio.get_event_loop().run_until_complete(get_coap_message())
         self.light_state = new_state["light_state"]
 
         if self.light_state == ls.LIGHT_LOW.value:
