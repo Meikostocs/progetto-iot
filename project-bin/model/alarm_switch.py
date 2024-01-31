@@ -2,7 +2,6 @@ import json
 from model.alarm_statuses import AlarmStatuses as As
 from enum import Enum
 class AlarmSwitch:
-
     def __init__(self,room_id,bed_id):
         self.room = room_id
         self.bed_id = bed_id
