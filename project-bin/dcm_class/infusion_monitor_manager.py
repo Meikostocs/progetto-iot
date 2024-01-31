@@ -53,7 +53,7 @@ class InfusionMonitorManager:
                             battery_level=measured_value['infusion_monitor_telemetry_data']['battery']['level'],
                             )     
         if infusion_monitor.critical_status():
-            self.console.print("someone is dieing")
+            self.console.print("someone is dying")
 
 
 

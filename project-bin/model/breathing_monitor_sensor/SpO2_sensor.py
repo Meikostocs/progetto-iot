@@ -24,7 +24,7 @@ class SpO2Sensor:
             self.measurement = 100
         
     def critical_status(self):
-        return self.measurement < 95
+        return True
 
     def to_json(self):
         return json.dumps(self, default=lambda o: o.__dict__)

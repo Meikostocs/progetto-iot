@@ -15,6 +15,7 @@ from request.light_request import LightRequestDescriptor
 from dcm_class.breathing_monitor_manager import BreathingMonitorManager 
 from dcm_class.infusion_monitor_manager import InfusionMonitorManager
 from request.suction_request import SuctionRequestDescriptor
+from request.oxygenation_request import OxygenationRequest
 import random
 import logging
 import asyncio
@@ -72,6 +73,14 @@ async def set_light_time():
         await asyncio.sleep(2)
 
 
+
+async def activate_oxygenation():
+
+    while True:
+        await coap_put_client.set_oxygenation_state(OxygenationRequest.OXYGENATION_LOW)
+        await asyncio.sleep(300) #aspetta 5 minuti
+
+
 async def switch_alarm():
     while True:
         '''
@@ -123,8 +132,7 @@ async def switch_alarm():
         Temperature =
         Battery =
         '''
-        # consumer MQTT, LEGGO PARAMENTRI
-        # GET..
+
         return 0  # get_..
 
 
