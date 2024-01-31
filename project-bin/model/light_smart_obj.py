@@ -4,7 +4,7 @@ from enum import Enum
 from aiocoap import *
 import request
 import asyncio
-from client.coap_get_client_lightsmartobj import get_coap_message
+from client.coap_get_client import get_coap_light as get_coap_message
 
 
 class LightSmartObj:

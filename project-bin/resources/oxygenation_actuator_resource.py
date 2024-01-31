@@ -5,11 +5,12 @@ from request.oxygenation_request import OxygenationRequest
 from model.oxygenator import Oxygenator
 import json
 from model.console import Console
+import aiocoap.numbers as numbers
 
 class OxygenationActuatorResource(resource.Resource):
 
     def __init__(self,room_id, bed_id):
-        super(OxygenationActuatorResource,self).__init__()
+        super().__init__()
         self.room_id = room_id
         self.bed_id = bed_id
         self.name = f'oxygenator-{self.room_id}-{self.bed_id}'
@@ -20,11 +21,20 @@ class OxygenationActuatorResource(resource.Resource):
         self.console = Console(debug=True)
         self.console.print(f'[+] OXYGENETOR {self.room_id}-{self.bed_id} UP')
 
+
+    async def render_get(self, request):
+        self.console.debug("GET AT OXYGENATOR ACTUATOR")
+        payload_string = self.device_info.to_json()
+        return aiocoap.Message(content_format=numbers.media_types_rev['application/senml+json'],
+                               payload=payload_string.encode('utf8'))
+
     async def render_post(self, request):
         self.console.debug(f"POST AT OXYGEN ACTUATOR")
         self.device_info.switch_oxygenation_state()
         self.console.debug(f'STATE CHANGED In: {self.device_info.oxigenation_state}')
         return aiocoap.Message(code=Code.CHANGED)
+
+
 
     async def render_put(self, request):
         json_payload_string = request.payload.decode('UTF-8')

@@ -1,5 +1,6 @@
 import json
 from request.oxygenation_request import OxygenationRequest as oxi_req
+from enum import Enum
 class Oxygenator:
 
     def __init__(self, room_id, bed_id):

@@ -11,7 +11,7 @@ from model.console import Console
 from model.mqtt_subscriber import MQTTSubscriber
 from request.alarm_request import AlarmRequestDescriptor
 import asyncio
-
+from client.coap_get_client import get_coap_alarm
 
 class InfusionMonitorManager:
 
@@ -59,17 +59,25 @@ class InfusionMonitorManager:
                                            temp_measurement=temp_measurement,
                                            battery_level=battery_level
                                            )
+
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        alarm_status = loop.run_until_complete(get_coap_alarm(f'coap://127.0.0.1:5683/actuation/{id_room}/{id_bed}/alarm'))
+        loop.close()
+
         if infusion_monitor.critical_status():
-            if not self.alarm:
+            if alarm_status['alarm_state'] == 'off':
                 self.console.print(f"CRITICAL SITUATION AT {id_room}-{id_bed} INFUSION MONITOR")
                 loop = asyncio.new_event_loop()
                 asyncio.set_event_loop(loop)
                 loop.run_until_complete(self.alarm_handler(id_room, id_bed, AlarmRequestDescriptor.ALARM_ON))
                 loop.close()
             self.alarm = True
+
         elif self.alarm:
+            if alarm_status['alarm_state'] == 'on':
+                loop = asyncio.new_event_loop()
+                asyncio.set_event_loop(loop)
+                loop.run_until_complete(self.alarm_handler(id_room, id_bed, AlarmRequestDescriptor.ALARM_OFF))
+                loop.close()
             self.alarm = False
-            loop = asyncio.new_event_loop()
-            asyncio.set_event_loop(loop)
-            loop.run_until_complete(self.alarm_handler(id_room, id_bed, AlarmRequestDescriptor.ALARM_OFF))
-            loop.close()

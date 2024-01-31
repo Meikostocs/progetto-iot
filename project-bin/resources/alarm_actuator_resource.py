@@ -49,3 +49,7 @@ class AlarmActuatorResource(resource.Resource):
             print(f'ALARM STOP {self.id_room}-{self.id_bed}')
             return aiocoap.Message(code=Code.CHANGED)
 
+    async def render_get(self, request):
+        payload_string = self.device_info.to_json()
+        return aiocoap.Message(content_format=numbers.media_types_rev['application/senml+json'],
+                               payload=payload_string.encode('utf8'))
