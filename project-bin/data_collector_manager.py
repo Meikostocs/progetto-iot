@@ -102,8 +102,6 @@ async def switch_alarm():
         Battery_min =
         Battery_max =
 
-
-        '''
         main
         Monitor respirazione:
         CO2 =

@@ -5,6 +5,11 @@ import sys
 sys.path.append("./")
 sys.path.append("./model")
 
+#Configuration files
+from conf.mqtt_conf_166317 import MqttConfigurationParameters
+#Custom models
+from model.infusion_monitor import InfusionMonitor
+from model.console import Console
 
 class MQTTSubscriber:
 
