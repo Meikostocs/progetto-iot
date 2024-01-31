@@ -15,6 +15,7 @@ class OxygenationActuatorResource(resource.Resource):
         self.bed_id = bed_id
         self.name = f'oxygenator-{self.room_id}-{self.bed_id}'
         self.device_info = Oxygenator(room_id=self.room_id,bed_id=self.bed_id)
+        self.ct = numbers.media_types_rev['application/senml+json']
         self.if_ = "core.a"
         self.rt = "it.project.device.actuator.oxygenator"
         self.title = "Oxigenator"
