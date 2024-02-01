@@ -1,7 +1,11 @@
 aiocoap==0.4.7
+cbor2==5.6.0
 certifi==2023.11.17
 charset-normalizer==3.3.2
+colorama==0.4.6
 idna==3.6
+kpn_senml==1.0.1
+mqtt==0.0.1
 paho-mqtt==1.6.1
 requests==2.31.0
 resources==0.0.1
