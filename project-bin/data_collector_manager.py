@@ -6,13 +6,15 @@ import threading
 import client.coap_put_client as coap_put_client
 from dcm_class.breathing_monitor_manager import BreathingMonitorManager 
 from dcm_class.infusion_monitor_manager import InfusionMonitorManager
+from dcm_class.heart_monitor_manager import HeartMonitorManager
+from dcm_class.EM_manager import EmManager
 import random
 import asyncio
 import datetime
 from request.light_request import LightRequestDescriptor
 from request.suction_request import SuctionRequestDescriptor
 
-
+'''
 async def activate_suction_fan():
     humidity_threshold = 60 #%
     high_humidity = 70
@@ -35,6 +37,7 @@ async def activate_suction_fan():
             await coap_put_client.set_suction_state(SuctionRequestDescriptor.SUCTION_OFF,'A1','1')
 
         await asyncio.sleep(300) #5 minutes
+'''
 
 async def get_current_time():
     return datetime.datetime.now().time()
@@ -59,6 +62,9 @@ async def set_light_time():
 async def switch_alarm(id_room,id_bed,status):
     await coap_put_client.set_alarm_state(status,id_room,id_bed)
 
+async def switch_fan_state(id_room,id_bed,status):
+    await coap_put_client.set_suction_state(status,id_room,id_bed)
+
 
 def breathing_monitor_thread_handler():
     BreathingMonitorManager(alarm_handler=switch_alarm).run()
@@ -66,23 +72,33 @@ def breathing_monitor_thread_handler():
 def infusion_monitor_thread_handler():
     InfusionMonitorManager(alarm_handler=switch_alarm).run()
 
+def heart_monitor_thread_handler():
+    HeartMonitorManager(alarm_handler=switch_alarm).run()
+
+def EM_monitor_thread_handler():
+    EmManager(alarm_handler=switch_fan_state).run()
+
 def set_light_time_handler():
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
     loop.run_until_complete(set_light_time())
     loop.close()
+'''
 
 def activate_suction_fan_handler():
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
     loop.run_until_complete(activate_suction_fan())
     loop.close()
+'''
 
 async def main():
     infusion_monitor_thread = threading.Thread(target=infusion_monitor_thread_handler).start()
     breathing_monitor_thread = threading.Thread(target=breathing_monitor_thread_handler).start()
-    set_light_time_thread = threading.Thread(target=set_light_time_handler).start()
-    activate_suction_fan_thread = threading.Thread(target=activate_suction_fan_handler).start()
+#    set_light_time_thread = threading.Thread(target=set_light_time_handler).start()
+#   activate_suction_fan_thread = threading.Thread(target=activate_suction_fan_handler).start()
+    heart_monitor_thread = threading.Thread(target=heart_monitor_thread_handler).start()
+    EM_monitor_thread = threading.Thread(target=EM_monitor_thread_handler).start()
 
 
 if __name__ == "__main__":

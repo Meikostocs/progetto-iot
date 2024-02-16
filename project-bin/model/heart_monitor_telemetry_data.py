@@ -1,3 +1,9 @@
+
+import sys
+
+sys.path.append("./")
+sys.path.append("./model")
+
 from heart_monitor_sensor_model.ECG_sensor import ECGSensor
 from heart_monitor_sensor_model.heart_rate_sensor import HeartRateSensor
 from heart_monitor_sensor_model.IBP_sensor import IBPSensor
@@ -10,15 +16,15 @@ import json
 
 
 class HeartMonitorTelemtryData:
-    def __init__(self, ecg_measurement=None, heart_rate_measurement=None, ibp_measurement=None,
-                 nibp_measurement=None, pressure_avg_measurement=None, battery_level=None):
+    def __init__(self, ecg_measurement=None, heart_rate_measurement=None, ibp_pressure1_measurement=None, ibp_pressure2_measurement=None,
+                 nibp_diastolic_measurement=None, nibp_sistolic_measurement=None, pressure_avg_measurement=None, battery_level=None):
         """
         Caputure data.
         """
         self.ECG = ECGSensor(ecg_measurement)
         self.heart_rate = HeartRateSensor(heart_rate_measurement)
-        self.IBP = IBPSensor(ibp_measurement)
-        self.NIBP = NIBPSensor(nibp_measurement)
+        self.IBP = IBPSensor(pressure1=ibp_pressure1_measurement, pressure2=ibp_pressure2_measurement)
+        self.NIBP = NIBPSensor(pressure_diastolic=nibp_diastolic_measurement, pressure_sistolic=nibp_sistolic_measurement)
         self.pressure_avg = PressureAvarageSensor(pressure_avg_measurement)
         # Battery has 10A
         self.battery = Battery(capacity=10000, level=battery_level)

@@ -56,3 +56,9 @@ class SuctionActuatorResource(resource.Resource):
 
         else:
             return aiocoap.Message(code=Code.BAD_REQUEST)
+
+    async def render_get(self, request):
+        payload_string = self.device_info.to_json()
+
+        return aiocoap.Message(content_format=numbers.media_types_rev['application/senml+json'],
+                               payload=payload_string.encode('utf8'))

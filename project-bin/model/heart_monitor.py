@@ -1,8 +1,6 @@
 from model.heart_monitor_descriptor import HeartMonitorDescriptor
 from model.heart_monitor_telemetry_data import HeartMonitorTelemtryData
-from model.console import Console
 import json
-import time
 
 class HeartMonitor:
 
@@ -11,16 +9,20 @@ class HeartMonitor:
                  id_bed,
                  ecg_measurement=None,
                  heart_rate_measurement=None,
-                 ibp_measurement=None,
-                 nibp_measurement=None,
+                 ibp_pressure1_measurement=None,
+                 ibp_pressure2_measurement=None,
+                 nibp_diastolic_measurement=None,
+                 nibp_sistolic_measurement=None,
                  pressure_avg_measurement=None,
                  battery_level=None):
 
         self.heart_monitor_descriptor = HeartMonitorDescriptor(id_room=id_room, id_bed=id_bed)
         self.heart_monitor_telemetry_data = HeartMonitorTelemtryData(ecg_measurement=ecg_measurement,
                                                                          heart_rate_measurement=heart_rate_measurement,
-                                                                         ibp_measurement=ibp_measurement,
-                                                                         nibp_measurement=nibp_measurement,
+                                                                         ibp_pressure1_measurement=ibp_pressure1_measurement,
+                                                                         ibp_pressure2_measurement=ibp_pressure2_measurement,
+                                                                         nibp_diastolic_measurement=nibp_diastolic_measurement,
+                                                                         nibp_sistolic_measurement=nibp_sistolic_measurement,
                                                                          pressure_avg_measurement=pressure_avg_measurement,
                                                                          battery_level=battery_level)
 
@@ -34,17 +36,7 @@ class HeartMonitor:
         return json.dumps(self, default=lambda o: o.__dict__)
 
 
-prova= HeartMonitor(id_room='prova', id_bed='1')
-console=Console
 
-while True:
-    prova.update_measurements()
-    print(prova.to_json())
-    if prova.critical_status():
-        console.error(console,"Stato critico")
-    else:
-        console.print(console,"tutto ok")
-    time.sleep(0.5)
 
 
 

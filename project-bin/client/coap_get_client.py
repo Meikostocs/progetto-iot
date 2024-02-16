@@ -21,3 +21,10 @@ async def get_coap_alarm(uri):
     response = await protocol.request(request).response
     response_string = response.payload.decode("utf-8")
     return json.loads(response_string)
+
+async def get_coap_fan_state(uri):
+    protocol = await Context.create_client_context()
+    request = Message(code=Code.GET, uri=uri)
+    response = await protocol.request(request).response
+    response_string = response.payload.decode("utf-8")
+    return json.loads(response_string)
